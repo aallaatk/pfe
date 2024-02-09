@@ -10,8 +10,8 @@ body{
          
 .btn-grad {
     background-image: linear-gradient(to right, #7474BF 0%, #348AC7  51%, #7474BF  100%);
-    margin: 10px;
-    padding: 15px 45px;
+    margin: 10px 0px;
+    padding: 15px !important ;
     text-align: center;
     text-transform: uppercase;
     transition: 0.5s;
@@ -20,6 +20,8 @@ body{
     box-shadow: 0 0 20px #eee;
     border-radius: 10px;
     display: block;
+    outline: none;
+    border: none;
   }
 
   .btn-grad:hover {
@@ -27,4 +29,16 @@ body{
     color: #fff;
     text-decoration: none;
   }
+  .bt {
+    background: url('./assets/BrowseTours.jpg') center no-repeat;
+    background-size: cover;
+    display: flex;
+    height: 400px;
+    align-items: flex-start;
+    h2{
+      color: white;
+     }
+}
+
+  
  

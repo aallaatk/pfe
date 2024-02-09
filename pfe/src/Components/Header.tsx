@@ -18,7 +18,10 @@ function Header() {
         </li>
         <li className="nav-item">
           <a className="nav-link" href="#">Tours</a>
-        </li>       
+        </li>
+        <li className="nav-item">
+          <a className="nav-link" href="#">Sites</a>
+        </li>         
         <li className="nav-item">
           <a className="nav-link" href="#">guiders</a>
         </li>

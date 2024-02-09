@@ -1,5 +1,5 @@
 
-interface Contact {
+ export interface Contact {
  phone:number,
  email: string,
  address:string   
