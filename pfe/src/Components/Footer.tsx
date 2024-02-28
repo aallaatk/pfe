@@ -40,37 +40,35 @@ const Footer = ({phone,email,address}:Contact) => {
         <div className="container text-center text-md-start mt-5">
           <div className="row mt-3">
             <div className="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">
-                <i className="fas fa-gem me-3"></i>
-                Company name
+              <h6 className="text-uppercase fw-bold mb-4"><i className="fas fa-gem me-3"></i>
+                Tunisian heritage djerba
               </h6>
               <p>
-                Here you can use rows and columns to organize your footer content. Lorem ipsum dolor sit
-                amet, consectetur adipisicing elit.
+             Tunisian heritage Djerba, offers seamless booking for guided tours in the picturesque island of Djerba, Tunisia, ensuring an enriching travel experience with knowledgeable local guides.
               </p>
             </div>
 
             {/* Products */}
             <div className="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
-              <h6 className="text-uppercase fw-bold mb-4">Products</h6>
+              <h6 className="text-uppercase fw-bold mb-4">Sites</h6>
               <p>
                 <a href='#!' className='text-reset'>
-                  Angular
+                  Houmt Souk
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  React
+                El Ghriba synagogue
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Vue
+                Djerba Explore Park
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Laravel
+                Sentido Djerba Beach
                 </a>
               </p>
             </div>
@@ -112,7 +110,7 @@ const Footer = ({phone,email,address}:Contact) => {
                 {email}
               </p>
               <p>
-                <i className="fas fa-phone me-3"></i>{phone}
+                <i className="fas fa-phone me-3"></i>+216 {phone}
               </p>
               
             </div>
@@ -120,8 +118,8 @@ const Footer = ({phone,email,address}:Contact) => {
         </div>
       </section>
 
-      <div className="text-center p-4" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © {new Date().getFullYear()} Company Name. All rights reserved.
+      <div className="text-center p-4 bg-primary" style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)',color:'white' }}>
+        © {new Date().getFullYear()} TH Djerba | All rights reserved.
       </div>
     </footer>
   );

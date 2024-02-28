@@ -1,4 +1,5 @@
 /* initiallizing and body styling */
+$pcolor:#040073;
 *{
     padding: 0;
     margin: 0;
@@ -6,18 +7,18 @@
 }
 body{
     height: 100dvh;
+    background-color: whitesmoke;
 }
          
 .btn-grad {
     background-image: linear-gradient(to right, #7474BF 0%, #348AC7  51%, #7474BF  100%);
-    margin: 10px 0px;
-    padding: 15px !important ;
-    text-align: center;
-    text-transform: uppercase;
+
+   
+   
     transition: 0.5s;
     background-size: 200% auto;
     color: white;            
-    box-shadow: 0 0 20px #eee;
+    box-shadow: 0 0 10px #eee;
     border-radius: 10px;
     display: block;
     outline: none;
@@ -33,12 +34,38 @@ body{
     background: url('./assets/BrowseTours.jpg') center no-repeat;
     background-size: cover;
     display: flex;
+    flex-direction: column;
     height: 400px;
     align-items: flex-start;
+    justify-content: center;
     h2{
       color: white;
+      font-weight: bold;
+      letter-spacing: 0.5rem;
      }
 }
-
+.nav-item {
+  color: $pcolor; 
+  font-weight: bold;
+  transition: all 0.3s ease; 
+}
+.nav-item:hover {
   
- 
+  border-bottom: 5px solid $pcolor;
+}
+.overlay-content{
+  
+  h2{
+    font-weight: bold;
+    font-size: 58px;
+    letter-spacing: 0.2em;
+  }
+  p{
+    font-weight: bold;
+    letter-spacing: 0.2em;
+    font-family: "Playfair Display", serif;
+    font-size: 32px;
+    
+  }
+}
+

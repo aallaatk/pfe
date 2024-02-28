@@ -1,13 +1,15 @@
-interface Button{
-  text:string
-  bclass:string
-  icon?:string
+interface ButtonProps {
+  text: string;
+  bclass: string;
+  icon?: string;
 }
 
-function Button({text,bclass,icon}:Readonly<Button>) {
+function Button({ text, bclass, icon }: Readonly<ButtonProps>) {
   return (
-    <button type="button" className={bclass}> {icon && <span className="icon">{icon}</span>} {text}</button>
-  )
+    <button style={{ color: 'white' }} type="button" className={bclass}>
+       {text} {icon && <i className={icon} style={{marginLeft:'7px'}}></i>}
+    </button>
+  );
 }
 
-export default Button
+export default Button;

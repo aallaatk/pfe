@@ -1,22 +1,29 @@
-
-// import { Route, Routes, BrowserRouter } from 'react-router-dom';
-
 import BrowseTours from "./Components/BrowseTours";
-
-
-// // import Signup from './Pages/SignUp';
-// // import Login from './Pages/Login';
+import Footer from "./Components/Footer";
+import GuiderSection from "./Components/GuiderSection";
+import Header from "./Components/Header";
+import ImageSlider from "./Components/ImageSlider";
+import TopContact from "./Components/TopContact";
 
 function App() {
+  // Define contact information
+  const contactInfo = {
+    phone: 21375123,
+    email: "sleimiala@gmail.com",
+    address: "rue ezz edine hanachi"
+  };
+
   return (
-    // <BrowserRouter>
-    //   <Routes>
-    //     <Route path='/register' element={<Signup/>}/>
-    //     <Route path='/login' element={<Login/>}/>
-    //   </Routes>
-    // </BrowserRouter>
-    <BrowseTours/>
-  )
+    <>
+      <TopContact {...contactInfo} />
+      <Header />
+      <ImageSlider/>
+      <GuiderSection />
+      <BrowseTours />
+      
+      <Footer {...contactInfo} />
+    </>
+  );
 }
 
 export default App;
