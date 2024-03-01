@@ -63,4 +63,33 @@ body {
   letter-spacing: 0.2em;
   font-family: "Playfair Display", serif;
   font-size: 32px;
+}
+
+#why {
+  height: 500px;
+}
+#why h2 {
+  text-align: center;
+  color: #040073;
+}
+
+#steps > div {
+  background-color: #348AC7;
+  padding: 30px;
+}
+
+#steps > span {
+  display: inline-block;
+}
+
+#steps > div > h2 {
+  font-weight: bold;
+  font-size: 46px;
+  letter-spacing: 0.5rem;
+  color: white;
+}
+
+#steps > div > p {
+  font-size: 22px;
+  color: rgba(255, 253, 253, 0.7333333333);
 }/*# sourceMappingURL=style.css.map */

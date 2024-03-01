@@ -1,28 +1,21 @@
-import BrowseTours from "./Components/BrowseTours";
-import Footer from "./Components/Footer";
-import GuiderSection from "./Components/GuiderSection";
-import Header from "./Components/Header";
-import ImageSlider from "./Components/ImageSlider";
-import TopContact from "./Components/TopContact";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+
+
+
+import Login from './Pages/Login';
+import Signup from './Pages/SignUp';
+import Home from './Pages/Home';
 
 function App() {
-  // Define contact information
-  const contactInfo = {
-    phone: 21375123,
-    email: "sleimiala@gmail.com",
-    address: "rue ezz edine hanachi"
-  };
-
   return (
-    <>
-      <TopContact {...contactInfo} />
-      <Header />
-      <ImageSlider/>
-      <GuiderSection />
-      <BrowseTours />
-      
-      <Footer {...contactInfo} />
-    </>
+    <Router>
+<Routes>
+  <Route path="/signup" element={<Signup />} />
+  <Route path="/login" element={<Login />} />
+  
+  <Route path="/home" element={<Home />} />
+</Routes>
+    </Router>
   );
 }
 

@@ -68,4 +68,30 @@ body{
     
   }
 }
+#why{
+  height: 500px;
+  h2 {
+    text-align: center;
+    color: $pcolor;
 
+  }
+}
+#steps > div{
+  background-color: #348AC7;
+  padding: 30px;
+}
+#steps > span{
+
+  display: inline-block;
+}
+#steps > div > h2 {
+  font-weight: bold;
+  font-size: 46px;
+  letter-spacing: 0.5rem;
+  color: white;
+}
+
+#steps > div > p {
+  font-size: 22px;
+  color: #fffdfdbb;
+}
