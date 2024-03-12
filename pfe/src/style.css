@@ -92,4 +92,41 @@ body {
 #steps > div > p {
   font-size: 22px;
   color: rgba(255, 253, 253, 0.7333333333);
+}
+
+/* Sites.css */
+/* Style for the image container */
+.image-container {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Style for the image itself */
+.site-image {
+  width: 100%;
+  transition: transform 0.3s ease; /* Add a smooth transition effect */
+}
+
+/* Style for the info button */
+.info-button {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: linear-gradient(to right, #7474BF 0%, #348AC7 51%, #7474BF 100%);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease;
+  font-weight: bold;
+}
+
+/* Show the info button on hover */
+.image-container:hover .site-image {
+  transform: scale(1.1); /* Zoom in effect */
+}
+
+.image-container:hover .info-button {
+  opacity: 1;
 }/*# sourceMappingURL=style.css.map */
