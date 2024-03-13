@@ -7,6 +7,7 @@ import image4 from '../assets/image-4.jpg';
 import image5 from '../assets/image-5.jpg';
 import image6 from '../assets/image-6.jpg';
 import Button from './Button';
+import { Link } from 'react-router-dom';
 
 const images: string[] = [
   image1,
@@ -39,7 +40,7 @@ const overlayStyle: React.CSSProperties = {
   color: 'white',
 };
 
-const ImageSlider: React.FC = () => {
+function ImageSlider()  {
   return (
     <div className='slide-container'>
       <Fade>
@@ -49,7 +50,9 @@ const ImageSlider: React.FC = () => {
               <div className="overlay-content" style={overlayStyle}>
                 <h2>Discover Sites</h2>
                 <p>dive into the beauty of djerba</p>
+                <Link to='/sites'>
                 <Button text={'browse sites >'} bclass={'btn btn-grad'} />
+                </Link>
               </div>
             </div>
           </div>

@@ -14,6 +14,7 @@ import Header from './Components/Header';
 import Footer from './Components/Footer';
 import { contactInfo } from './functions';
 import ContactUs from './Pages/ContactUs';
+import AboutUs from './Pages/AboutUs';
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/sites" element={<Sites />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/about" element={<AboutUs />} />
       </Routes>
       <Footer {...contactInfo} />
     </Router>

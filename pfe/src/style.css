@@ -129,4 +129,23 @@ body {
 
 .image-container:hover .info-button {
   opacity: 1;
+}
+
+#autop {
+  background: url("./assets/about.jpg") center fixed no-repeat;
+  background-size: cover;
+}
+
+#boxes {
+  text-align: center;
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+#boxes span {
+  font-weight: bold;
+  font-size: 30px;
+  color: #040073;
 }/*# sourceMappingURL=style.css.map */
