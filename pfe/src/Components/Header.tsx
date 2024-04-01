@@ -27,9 +27,14 @@ function Header() {
             <li className="nav-item">
               <Link className="nav-link" to="/about">About</Link>
             </li>
+            {/*  */}
+            <li className="nav-item">
+              <Link className="nav-link" to="/create">create</Link>
+            </li>
+            {/*  */}
           </ul>
-          <Button text={"Sign Up"} bclass={" btn btn-grad m-1 "}/>
-          <Button text={"Log In"} bclass={" btn btn-grad m-1 "}/>
+          <Link className="nav-link" to="/signup"> <Button text={"Sign Up"} bclass={" btn btn-grad m-1 "}/></Link>
+          <Link className="nav-link" to="/login"><Button text={"Log In"} bclass={" btn btn-grad m-1 "}/></Link>
         </div>
       </div>
     </nav>

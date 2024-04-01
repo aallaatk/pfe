@@ -1,5 +1,5 @@
 // Import images
-import sayo from '../assets/Synagogue_de_la_Ghriba_Djerba.jpg';
+import sayo from '../assets/El-Ghriba-Synagogue-Djerba-scaled.jpg';
 import exp from '../assets/explore.jpg';
 import sentido from '../assets/sentido.jpg';
 import guellela from '../assets/guellala.jpg';

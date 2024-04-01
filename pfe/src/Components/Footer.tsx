@@ -78,22 +78,22 @@ const Footer = ({phone,email,address}:Contact) => {
               <h6 className="text-uppercase fw-bold mb-4">Useful links</h6>
               <p>
                 <a href='#!' className='text-reset'>
-                  Pricing
+                  tours
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Settings
+                  guiders
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Orders
+                  contact
                 </a>
               </p>
               <p>
                 <a href='#!' className='text-reset'>
-                  Help
+                 about
                 </a>
               </p>
             </div>
