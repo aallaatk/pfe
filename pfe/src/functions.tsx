@@ -4,13 +4,15 @@ export const contactInfo = {
     address: "rue ezz edine hanachi"
   };
   export  interface TourInfo {
+    [key: string]: string | number | Date | null | File;
     tourname: string;
     creator: string;
-    date: string;
+    date: Date ; // Allow both Date and string types for date
     price: number;
     description: string;
     attendees: number;
-    image: File | null; 
-    location:string;
-    duration:string
+    image: File | null; // Assume File type for image upload
+    location: string;
+    duration: string;
   }
+  

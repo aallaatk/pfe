@@ -74,12 +74,13 @@ function Signup() {
         }
 
         // If no errors, proceed with form submission
-        axios.post("http://localhost:3000/signup", formData)
-            .then(result => {
-                console.log(result);
-                navigate("/login");
-            })
-            .catch(err => console.log(err));
+        axios.post("http://localhost:3000/api/auth/signup", formData)
+    .then(result => {
+        console.log(result);
+        navigate("/login");
+    })
+    .catch(err => console.log(err));
+
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
