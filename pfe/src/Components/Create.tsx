@@ -1,124 +1,252 @@
-import React, { useState } from 'react';
+import React, { useState, ChangeEvent, FormEvent } from 'react';
 import axios from 'axios';
-import { TourInfo } from '../functions';
+
+interface NewTour {
+  tourname: string;
+  creator: string;
+  date: string;
+  price: number;
+  description?: string;
+  attendees?: number;
+  location?: string;
+  duration?: string;
+  imageUrl: string;
+}
 
 const TourForm: React.FC = () => {
-  const [formData, setFormData] = useState<TourInfo>({
-    image: null,
+  const initialFormData: NewTour = {
+    imageUrl: '',
     tourname: '',
     creator: '',
-    date: new Date(), // Initialize with current date as a Date object
+    date: new Date().toISOString().split('T')[0],
     price: 0,
     description: '',
     attendees: 0,
     location: '',
     duration: '',
-  });
+  };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [formData, setFormData] = useState<NewTour>(initialFormData);
+  const [imageFile, setImageFile] = useState<File | null>(null);
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value ?? '' });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      setFormData({ ...formData, image: e.target.files[0] });
+      const selectedFile = e.target.files[0];
+      setImageFile(selectedFile);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        imageUrl: URL.createObjectURL(selectedFile),
+      }));
     }
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const formDataToSend = new FormData();
-      for (const key in formData) {
-        if (Object.prototype.hasOwnProperty.call(formData, key)) {
-          const value = formData[key];
-          if (value !== null) {
-            if (key === 'date') {
-              formDataToSend.append(key, (value as Date).toISOString().split('T')[0]);
-            } else if (key === 'image') {
-              formDataToSend.append(key, value as File);
-            } else {
-              formDataToSend.append(key, value.toString());
-            }
-          }
-        }
-      }
-      const res = await axios.post('http://localhost:3000/api/tours', formDataToSend, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
 
-      console.log(res.data);
-      setFormData({
-        tourname: '',
-        creator: '',
-        date: new Date(), // Reset date to current date
-        price: 0,
-        description: '',
-        attendees: 0,
-        image: null,
-        location: '',
-        duration: '',
-      });
-    } catch (err) {
-      console.error(err);
+    if (!imageFile) {
+      console.error('Please select an image');
+      return;
+    }
+
+    console.log('Collected Tour Data before sending:', formData);
+
+    try {
+      const formDataForUpload = new FormData();
+      formDataForUpload.append('file', imageFile);
+
+      const cloudinaryCloudName = 'dpnba7vok';
+      const uploadPreset = 'tuzria4w';
+
+      const cloudinaryResponse = await axios.post(
+        `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+        formDataForUpload,
+        {
+          params: {
+            upload_preset: uploadPreset,
+          },
+        }
+      );
+
+      console.log('Cloudinary Response:', cloudinaryResponse.data);
+
+      const newTour: NewTour = {
+        ...formData,
+        imageUrl: cloudinaryResponse.data.secure_url,
+      };
+
+      const backendResponse = await axios.post('http://localhost:3000/api/tours/create', newTour);
+
+      console.log('Tour created successfully:', backendResponse.data);
+
+      setFormData(initialFormData);
+      setImageFile(null); // Reset selected image file
+    } catch (error) {
+      console.error('Error creating tour:', error);
     }
   };
 
   return (
     <form onSubmit={handleSubmit} className="container mt-5">
+    <div className="row mb-3">
+      <label htmlFor="image" className="col-sm-2 col-form-label">
+        Tour Image:
+      </label>
+      <div className="col-sm-10">
+        <input
+          type="file"
+          id="image"
+          name="image"
+          className="form-control"
+          onChange={handleImageChange}
+        />
+        {formData.imageUrl && <img src={formData.imageUrl} alt="Tour Preview" className="mt-3" />}
+      </div>
+      </div>
       <div className="row mb-3">
-        <label htmlFor="image" className="col-sm-2 col-form-label">Tour Image:</label>
+        <label htmlFor="tourname" className="col-sm-2 col-form-label">
+          Tour Name:
+        </label>
         <div className="col-sm-10">
-          <input type="file" id="image" name="image" className="form-control" onChange={handleImageChange} />
+          <input
+            type="text"
+            id="tourname"
+            name="tourname"
+            value={formData.tourname}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="tourname" className="col-sm-2 col-form-label">Tour Name:</label>
+        <label htmlFor="creator" className="col-sm-2 col-form-label">
+          Creator:
+        </label>
         <div className="col-sm-10">
-          <input type="text" id="tourname" name="tourname" value={formData.tourname} onChange={handleInputChange} className="form-control" />
+          <input
+            type="text"
+            id="creator"
+            name="creator"
+            value={formData.creator}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="creator" className="col-sm-2 col-form-label">Creator:</label>
+        <label htmlFor="date" className="col-sm-2 col-form-label">
+          Date:
+        </label>
         <div className="col-sm-10">
-          <input type="text" id="creator" name="creator" value={formData.creator} onChange={handleInputChange} className="form-control" />
+          <input
+            type="date"
+            id="date"
+            name="date"
+            // Example of type assertion
+            value={formData.date}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="date" className="col-sm-2 col-form-label">Date:</label>
+        <label htmlFor="description" className="col-sm-2 col-form-label">
+          Description:
+        </label>
         <div className="col-sm-10">
-          <input type="date" id="date" name="date" value={formData.date.toISOString().split('T')[0]} onChange={handleInputChange} className="form-control" />
+          <textarea
+            id="description"
+            name="description"
+            value={formData.description}
+            onChange={handleInputChange}
+            className="form-control"
+            rows={3} // Adjust rows as needed
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="price" className="col-sm-2 col-form-label">Price:</label>
+        <label htmlFor="price" className="col-sm-2 col-form-label">
+          Price:
+        </label>
         <div className="col-sm-10">
-          <input type="number" id="price" name="price" value={formData.price} onChange={handleInputChange} className="form-control" />
+          <input
+            type="number"
+            id="price"
+            name="price"
+            value={formData.price}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="attendees" className="col-sm-2 col-form-label">Attendees:</label>
+        <label htmlFor="attendees" className="col-sm-2 col-form-label">
+          Attendees:
+        </label>
         <div className="col-sm-10">
-          <input type="number" id="attendees" name="attendees" value={formData.attendees} onChange={handleInputChange} className="form-control" />
+          <input
+            type="number"
+            id="attendees"
+            name="attendees"
+            value={formData.attendees}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="location" className="col-sm-2 col-form-label">Location:</label>
+        <label htmlFor="location" className="col-sm-2 col-form-label">
+          Location:
+        </label>
         <div className="col-sm-10">
-          <input type="text" id="location" name="location" value={formData.location} onChange={handleInputChange} className="form-control" />
+          <input
+            type="text"
+            id="location"
+            name="location"
+            value={formData.location}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
       <div className="row mb-3">
-        <label htmlFor="duration" className="col-sm-2 col-form-label">Duration:</label>
+        <label htmlFor="duration" className="col-sm-2 col-form-label">
+          Duration:
+        </label>
         <div className="col-sm-10">
-          <input type="text" id="duration" placeholder="example 8h-12h" name="duration" value={formData.duration} onChange={handleInputChange} className="form-control" />
+          <input
+            type="text"
+            id="duration"
+            placeholder="example 8h-12h"
+            name="duration"
+            value={formData.duration}
+            onChange={handleInputChange}
+            className="form-control"
+          />
         </div>
       </div>
-      <button type="submit" className="btn btn-primary">Create +</button>
+      <button type="submit" className="btn btn-primary">
+        Create +
+      </button>
     </form>
   );
-
 };
 
 export default TourForm;
+
+
+
+
+
+
+
+
+
+

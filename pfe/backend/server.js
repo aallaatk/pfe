@@ -3,7 +3,8 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors'; // Import the CORS middleware
 import authRoutes from './routes/authRoutes.js'; // Import your authRoutes
-import tourRoutes from './routes/tours.js'; // Import your tourRoutes
+import tourRoutes from './routes/tours.js';
+import statsRouter from './routes/Stats.js'; // Import your tourRoutes
 import upload from './multerConfig.js';
 const PORT = 3000;
 
@@ -19,11 +20,11 @@ mongoose.connect('mongodb://localhost:27017/pfe')
     .catch(err => console.error('Error connecting to MongoDB:', err));
 
 // Mount auth routes
-server.use('/api/auth', authRoutes);
+server.use('', authRoutes);
 
 // Mount tour routes
-server.use('/api/tours', tourRoutes);
-
+server.use('', tourRoutes);
+server.use('', statsRouter);
 // Start the server
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

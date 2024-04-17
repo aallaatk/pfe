@@ -148,4 +148,12 @@ body {
   font-weight: bold;
   font-size: 30px;
   color: #040073;
+}
+
+.sidebar {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 250px;
+  background-color: #f0f0f0;
 }/*# sourceMappingURL=style.css.map */

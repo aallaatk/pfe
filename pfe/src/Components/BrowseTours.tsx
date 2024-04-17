@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import Button from "./Button";
 
 function BrowseTours() {
@@ -8,7 +9,7 @@ function BrowseTours() {
           <div className="col-lg-6">
             <div className="d-flex flex-column">
               <h2 className="h1">Ready for your next holiday?</h2>
-              <Button text={"Browse Tours"} bclass={" mt-5 btn btn-grad  "} icon='fa-solid fa-magnifying-glass' />
+              <Link to="/tours"><Button text={"Browse Tours"} bclass={" mt-5 btn btn-grad  "} icon='fa-solid fa-magnifying-glass' /></Link>
             </div>
           </div>
         </div>

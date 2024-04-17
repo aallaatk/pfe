@@ -3,16 +3,16 @@ export const contactInfo = {
     email: "sleimiala@gmail.com",
     address: "rue ezz edine hanachi"
   };
-  export  interface TourInfo {
-    [key: string]: string | number | Date | null | File;
+  export interface TourInfo {
     tourname: string;
     creator: string;
-    date: Date ; // Allow both Date and string types for date
+    date: Date | string; // Allow both Date and string types for date
     price: number;
-    description: string;
-    attendees: number;
-    image: File | null; // Assume File type for image upload
-    location: string;
-    duration: string;
+    description?: string; // Optional description
+    attendees?: number; // Optional attendees
+    location?: string; // Optional location
+    duration?: string; // Optional duration
+    imageUrl?: File | null; // Optional image (nullable)
   }
+  
   

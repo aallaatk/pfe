@@ -16,6 +16,7 @@ import { contactInfo } from './functions';
 import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
 import Tours from './Pages/Tours';
+// import Dashboard from './Pages/Dashboard';
 import Create from './Components/Create';
 
 function App() {
@@ -31,6 +32,7 @@ function App() {
         <Route path="/sites" element={<Sites />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutUs />} />
+        {/* <Route path="/create" element={<Create />} /> */}
         <Route path="/create" element={<Create />} />
       </Routes>
       <Footer {...contactInfo} />

@@ -3,35 +3,45 @@ import Tour from '../models/tour.js';
 
 const router = express.Router();
 
-router.post('/', async (req, res) => {
+// GET route to retrieve all tours
+router.get('/api/tours', async (req, res) => {
   try {
-    const { tourname, creator, date, price, description, attendees, location, duration } = req.body;
-
-    // Assuming you have the image file attached in the request body as 'image'
-    const image = req.body.image ? req.body.image.path : null; // Access the uploaded image file path
-
-    // Parse date string into a JavaScript Date object
-    const parsedDate = new Date(date);
-
-    // Create a new tour object with the parsed date and other extracted data
-    const newTour = new Tour({
-      image,
-      tourname,
-      creator,
-      date: parsedDate,
-      price,
-      description,
-      attendees,
-      location,
-      duration,
-    });
-
-    await newTour.save();
-
-    res.status(201).json({ message: 'Tour created successfully', tour: newTour });
+    const tours = await Tour.find();
+    res.status(200).json(tours);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: 'Server error' });
+    console.error('Error retrieving tours:', error);
+    res.status(500).json({ message: 'Failed to retrieve tours' });
+  }
+});
+
+// GET route to retrieve a specific tour by ID
+router.get('/api/tours/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const tour = await Tour.findById(id);
+
+    if (!tour) {
+      return res.status(404).json({ message: 'Tour not found' });
+    }
+
+    res.status(200).json(tour);
+  } catch (error) {
+    console.error('Error retrieving tour by ID:', error);
+    res.status(500).json({ message: 'Failed to retrieve tour' });
+  }
+});
+
+// POST route to create a new tour
+router.post('/api/tours/create', async (req, res) => {
+  const newTourData = req.body;
+
+  try {
+    const newTour = await Tour.create(newTourData);
+    res.status(201).json(newTour);
+  } catch (error) {
+    console.error('Error creating tour:', error);
+    res.status(500).json({ message: 'Failed to create tour' });
   }
 });
 

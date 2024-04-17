@@ -1,5 +1,5 @@
 /* initiallizing and body styling */
-$pcolor:#040073;
+$pcolor:#2b2881;
 $scolor:#ffffffe6;
 *{
     padding: 0;
@@ -149,4 +149,12 @@ body{
         font-size: 30px;
         color: $pcolor;
       }
+}
+.sidebar{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 250px; 
+  background-color: #f0f0f0;
+
 }
