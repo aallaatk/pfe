@@ -1,5 +1,5 @@
 import { contactInfo } from "../functions";
-import Button from "../Components/Button";
+
 import Lcu from "../Components/Lcu";
 import Rcu from "../Components/Rcu";
 function ContactUs() {
@@ -44,9 +44,7 @@ function ContactUs() {
           </p>
         </div>
       </div>
-      <div className="row pl-5 pr-5">
-        <Button text={"Send"} bclass={"btn btn-grad"} />
-      </div>
+      
     </div>
   );
 }

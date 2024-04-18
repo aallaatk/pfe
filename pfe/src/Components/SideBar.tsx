@@ -17,7 +17,7 @@ function SideBar() {
             </div>
           }> 
         <MenuItem> Browse users </MenuItem>
-        <Link to="/create"><MenuItem> Create a user </MenuItem></Link>
+        <Link to="/tour/create"><MenuItem> Create a user </MenuItem></Link>
         
       </SubMenu>
       <MenuItem> <img src={guider} alt="tour" style={ { width: '30px', height: '30px', marginRight: '8px' }} />Guiders </MenuItem>

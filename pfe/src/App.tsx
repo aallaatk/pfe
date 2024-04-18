@@ -1,10 +1,5 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-
-
-
-
-
-
 import Login from './Pages/Login';
 import Signup from './Pages/SignUp';
 import Home from './Pages/Home';
@@ -16,24 +11,28 @@ import { contactInfo } from './functions';
 import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
 import Tours from './Pages/Tours';
-// import Dashboard from './Pages/Dashboard';
+// import Create from './Components/Create';
+import TourDetails from './Components/TourDetails';
+import DashboardTours from './Components/DashboardTours';
 import Create from './Components/Create';
 
 function App() {
   return (
-    <Router>     
+    <Router>
       <TopContact {...contactInfo} />
-        <Header/>
+      <Header />
       <Routes>
         <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route path="/tours" element={<Tours />} />
+        {/* Route for individual tour details */}
+        <Route path="/tour/:id" element={<TourDetails />} />
         <Route path="/sites" element={<Sites />} />
         <Route path="/contact" element={<ContactUs />} />
         <Route path="/about" element={<AboutUs />} />
-        {/* <Route path="/create" element={<Create />} /> */}
-        <Route path="/create" element={<Create />} />
+        <Route path="/create" element={<DashboardTours />} />
+        <Route path="/tour/create" element={<Create />} />
       </Routes>
       <Footer {...contactInfo} />
     </Router>

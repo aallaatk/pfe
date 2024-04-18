@@ -44,13 +44,13 @@ body {
 }
 
 .nav-item {
-  color: #040073;
+  color: #2b2881;
   font-weight: bold;
   transition: all 0.3s ease;
 }
 
 .nav-item:hover {
-  border-bottom: 5px solid #040073;
+  border-bottom: 5px solid #2b2881;
 }
 
 .overlay-content h2 {
@@ -70,7 +70,7 @@ body {
 }
 #why h2 {
   text-align: center;
-  color: #040073;
+  color: #2b2881;
 }
 
 #steps > div {
@@ -147,7 +147,7 @@ body {
 #boxes span {
   font-weight: bold;
   font-size: 30px;
-  color: #040073;
+  color: #2b2881;
 }
 
 .sidebar {
@@ -156,4 +156,8 @@ body {
   top: 0;
   width: 250px;
   background-color: #f0f0f0;
+}
+
+#id {
+  overflow-y: auto;
 }/*# sourceMappingURL=style.css.map */

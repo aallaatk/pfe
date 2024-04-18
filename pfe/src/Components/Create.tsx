@@ -28,7 +28,7 @@ const TourForm: React.FC = () => {
 
   const [formData, setFormData] = useState<NewTour>(initialFormData);
   const [imageFile, setImageFile] = useState<File | null>(null);
-
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -88,6 +88,7 @@ const TourForm: React.FC = () => {
 
       setFormData(initialFormData);
       setImageFile(null); // Reset selected image file
+      setIsSubmitted(true);
     } catch (error) {
       console.error('Error creating tour:', error);
     }
@@ -232,6 +233,11 @@ const TourForm: React.FC = () => {
           />
         </div>
       </div>
+      {isSubmitted && (
+        <div className="alert alert-success mt-3" role="alert">
+          Tour created successfully!
+        </div>
+      )}
       <button type="submit" className="btn btn-primary">
         Create +
       </button>
