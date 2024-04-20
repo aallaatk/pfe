@@ -1,6 +1,6 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
+import { login } from '../helper.js';
 import User from '../models/user.js';
 
 const router = express.Router();
@@ -24,7 +24,7 @@ router.post('/signup', async (req, res) => {
 
         await user.save();
 
-        console.log('User registered:', user); 
+        console.log('User registered:', user);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -37,29 +37,162 @@ router.post('/signup', async (req, res) => {
     }
 });
 
-router.post('/login', async (req, res) => {
-    try {
-        const { email, password } = req.body;
+router.post('/login/user', async (req, res) => {
+    await login(req, res, 'user');
+  });
+  
+  router.post('/login/admin', async (req, res) => {
+    await login(req, res, 'admin');
+  });
 
-        const user = await User.findOne({ email });
+
+
+//router to get all users
+router.get('/users', async (req, res) => {
+    try {
+        const users = await User.find({ isGuider: false }); // Fetch users where isGuider is false
+        res.status(200).json(users);
+    } catch (error) {
+        console.error('Error fetching users:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+//route to get all guiders
+router.get('/guiders', async (req, res) => {
+    try {
+        const guiders = await User.find({ isGuider: true });
+        res.status(200).json(guiders);
+    } catch (error) {
+        console.error('Error fetching guiders:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+//update guider by id
+router.put('/guiders/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, email, country, gsm, birthDate, cinFile } = req.body;
+
+    try {
+        const guider = await User.findById(id);
+
+        if (!guider) {
+            return res.status(404).json({ message: 'Guider not found' });
+        }
+
+        // Ensure that the user is a guider before allowing update
+        if (!guider.isGuider) {
+            return res.status(403).json({ message: 'Not authorized to update this user' });
+        }
+
+        // Perform update operation
+        const updatedGuider = await User.findByIdAndUpdate(
+            id,
+            {
+                name,
+                email,
+                country,
+                gsm,
+                birthDate,
+                cinFile: cinFile ? cinFile.path : null
+            },
+            { new: true }
+        );
+
+        res.status(200).json(updatedGuider);
+    } catch (error) {
+        console.error('Error updating guider:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+//deltee  fguider by id
+router.delete('/guiders/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const guider = await User.findById(id);
+
+        if (!guider) {
+            return res.status(404).json({ message: 'Guider not found' });
+        }
+
+        // Ensure that the user is a guider before allowing deletion
+        if (!guider.isGuider) {
+            return res.status(403).json({ message: 'Not authorized to delete this user' });
+        }
+
+        // Perform delete operation
+        const deletedGuider = await User.findByIdAndDelete(id);
+
+        if (!deletedGuider) {
+            return res.status(404).json({ message: 'Failed to delete guider' });
+        }
+
+        res.status(200).json({ message: 'Guider deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting guider:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
+//update user by id
+router.put('/users/:id', async (req, res) => {
+    const { id } = req.params;
+    const { name, email, country, gsm, birthDate, cinFile } = req.body;
+
+    try {
+        const user = await User.findById(id);
 
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid password' });
+        if (user.isGuider) {
+            return res.status(403).json({ message: 'Update not allowed for guiders' });
         }
 
-        const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
+        // Proceed with update if the user is not a guider
+        const updatedUser = await User.findByIdAndUpdate(id, {
+            name,
+            email,
+            country,
+            gsm,
+            birthDate,
+            cinFile: cinFile ? cinFile.path : null
+        }, { new: true });
 
-        res.status(200).json({ token });
+        res.status(200).json(updatedUser);
     } catch (error) {
-        console.error('Error logging in:', error);
+        console.error('Error updating user:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+//delete user by id
+router.delete('/users/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findById(id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        if (user.isGuider) {
+            return res.status(403).json({ message: 'Delete not allowed for guiders' });
+        }
+
+        // Proceed with deletion if the user is not a guider
+        await User.findByIdAndDelete(id);
+
+        res.status(200).json({ message: 'User deleted successfully' });
+    } catch (error) {
+        console.error('Error deleting user:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+
 
 export default router;

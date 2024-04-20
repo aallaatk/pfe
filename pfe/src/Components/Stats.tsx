@@ -7,6 +7,7 @@ interface StatsInfo {
 }
 
 function Stats({ tours, users, sites, guiders }: Readonly<StatsInfo>) {
+  
   return (
     <div className="container mt-5">
       <div className="row gx-3">

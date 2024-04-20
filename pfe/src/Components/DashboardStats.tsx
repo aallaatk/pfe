@@ -1,9 +1,8 @@
 import { useState, useEffect } from 'react';
 import Stats from '../Components/Stats';
 import axios from 'axios';
-import SideBar from '../Components/SideBar';
 
-function Dashboard() {
+function DashboardStats() {
     const [stats, setStats] = useState({
         tours: 0,
         users: 0,
@@ -26,21 +25,15 @@ function Dashboard() {
     };
     
     return (
-        <div className='container'>
-            <div className="row">
-                <h2 className='text-center' style={{letterSpacing:'0.25em',fontWeight:'bold',color:'#2b2881'}}>Tunisian Heritage-Djerba V1.0</h2>
-            </div>
-            
+       
             <Stats
                 tours={stats.tours}
                 users={stats.users}
                 sites={stats.sites}
                 guiders={stats.guiders}
             />
-            <SideBar/>
-            <Dashboard/>
-        </div>
+     
     );
 }
 
-export default Dashboard;
+export default DashboardStats;

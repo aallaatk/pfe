@@ -29,7 +29,7 @@ function Header() {
             </li>
             {/*  */}
             <li className="nav-item">
-              <Link className="nav-link" to="/create">create</Link>
+              <Link className="nav-link" to="/admin">Admin</Link>
             </li>
             {/*  */}
           </ul>
