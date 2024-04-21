@@ -19,7 +19,8 @@ router.post('/signup', async (req, res) => {
             gsm,
             birthDate,
             isGuider,
-            cinFile: cinFile ? cinFile.path : null
+            cinFile: cinFile ? cinFile.path : null,
+            role: 'user' // Assign default role as 'user' upon signup
         });
 
         await user.save();
@@ -37,16 +38,29 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+
 router.post('/login/user', async (req, res) => {
-    await login(req, res, 'user');
-  });
-  
-  router.post('/login/admin', async (req, res) => {
-    await login(req, res, 'admin');
-  });
+    const { email, password } = req.body;
+    const { success, token, user, message } = await login(email, password);
 
+    if (success) {
+        return res.status(200).json({ token, user });
+    } else {
+        return res.status(401).json({ message });
+    }
+});
 
+// Route for admin login
+router.post('/login/admin', async (req, res) => {
+    const { email, password } = req.body;
+    const { success, token, user} = await login(email, password);
 
+    if (success && user.role === 'admin') {
+        return res.status(200).json({ token, user });
+    } else {
+        return res.status(401).json({ message: 'Unauthorized' });
+    }
+});
 //router to get all users
 router.get('/users', async (req, res) => {
     try {

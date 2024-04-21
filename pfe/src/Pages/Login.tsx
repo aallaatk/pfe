@@ -5,26 +5,28 @@ import axios from 'axios';
 const Login: React.FC = () => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
-    const [rememberMe, setRememberMe] = useState<boolean>(false);
     const navigate = useNavigate();
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        
+
         try {
-            // Determine the endpoint based on the user's role
-            const endpoint = rememberMe ? "/login/admin" : "/login/user";
+            // Determine the login endpoint based on the provided email
+            const endpoint = email.toLowerCase() === 'sleimiala@gmail.com' ? "/login/admin" : "/login/user";
 
-            const response = await axios.post<{ token: string; role: string }>(`http://localhost:3000${endpoint}`, { email, password });
+            const response = await axios.post<{ token: string; user: { role: string } }>(
+                `http://localhost:3000${endpoint}`,
+                { email, password }
+            );
 
-            const { token, role } = response.data;
+            const { token, user } = response.data;
 
             // Store token and role in localStorage for authentication
             localStorage.setItem('token', token);
-            localStorage.setItem('role', role);
+            localStorage.setItem('role', user.role);
 
             // Redirect user based on role
-            navigate(role === 'admin' ? "/admin" : "/home");
+            navigate(user.role === 'admin' ? "/admin" : "/home");
         } catch (error) {
             console.error("Login failed:", error);
             alert("Login failed. Please check your credentials.");
@@ -58,16 +60,6 @@ const Login: React.FC = () => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                         />
-                    </div>
-                    <div className="mb-3 form-check">
-                        <input
-                            type="checkbox"
-                            className="form-check-input"
-                            id="rememberMe"
-                            checked={rememberMe}
-                            onChange={(e) => setRememberMe(e.target.checked)}
-                        />
-                        <label className="form-check-label" htmlFor="rememberMe">Remember Me</label>
                     </div>
                     <button className="btn btn-primary w-100" type="submit">Login</button>
                 </form>

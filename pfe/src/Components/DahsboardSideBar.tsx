@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
 import tour from '../assets/tour.png';
 import user from '../assets/user.png';
@@ -6,19 +6,19 @@ import guider from '../assets/guider.png';
 import calendar from '../assets/calendar.png';
 import { Link } from 'react-router-dom';
 
-function SideBar() {
+function DashboardSideBar() {
   return (
-    <div className='sidebar'>
+    <div className='sidebar' style={{height:'100vh'}}>
       <Sidebar>
         <Menu>
           <SubMenu
             label={
-              <Link to="/dashboard/users">
+            
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img src={user} alt="User Icon" style={{ width: '30px', height: '30px', marginRight: '8px' }} />
                   <span>Users</span>
                 </div>
-              </Link>
+              
             }
           >
             <Link to="/dashboard/users">
@@ -36,12 +36,12 @@ function SideBar() {
           </Link>
           <SubMenu
             label={
-              <Link to="/dashboard/tours">
+              
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <img src={tour} alt="Tour Icon" style={{ width: '30px', height: '30px', marginRight: '8px' }} />
                   <span>Tours</span>
                 </div>
-              </Link>
+              
             }
           >
             <Link to="/dashboard/tours">
@@ -63,4 +63,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default DashboardSideBar;
