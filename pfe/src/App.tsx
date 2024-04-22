@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Login from './Pages/Login';
 import Signup from './Pages/SignUp';
 import Sites from './Pages/Sites';
@@ -10,39 +10,93 @@ import { contactInfo } from './functions';
 import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
 import Tours from './Pages/Tours';
-// import Create from './Components/Create';
 import TourDetails from './Components/TourDetails';
 import DashboardTours from './Components/DashboardTours';
 import Create from './Components/Create';
-
-import AdminDashboard from './Pages/AdminDashboard';
 import Home from './Pages/Home';
+import DashboardUsers from './Components/DashboardUsers';
+import DashboardGuiders from './Components/DashboardGuiders';
+import AdminDashboard from './Pages/AdminDashboard';
+import DashboardHeader from './Components/DashboardHeader';
+import DashboardSideBar from './Components/DahsboardSideBar';
+
 
 function App() {
+  const [isAdmin, setIsAdmin] = useState<boolean>(false);
+
+  useEffect(() => {
+    const role = localStorage.getItem('role');
+    if (role === 'admin') {
+      setIsAdmin(true);
+    }
+  }, []);
+
+  const handleLogin = (role: string) => {
+    if (role === 'admin') {
+      setIsAdmin(true);
+    } else {
+      setIsAdmin(false);
+    }
+  };
+
+  const logout = () => {
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    setIsAdmin(false);
+  };
+
   return (
     <Router>
-      <TopContact {...contactInfo} />
-      <Header />
-      <Routes>
-        {/* Public Routes */}
-        <Route path="/home" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login  />} />
-        <Route path="/tours" element={<Tours />} />
-        {/* Route for individual tour details */}
-        <Route path="/tour/:id" element={<TourDetails />} />
-        <Route path="/sites" element={<Sites />} />
-        <Route path="/contact" element={<ContactUs />} />
-        <Route path="/about" element={<AboutUs />} />
-        <Route path="/create" element={<DashboardTours />} />
-        <Route path="/tour/create" element={<Create />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-                {/* Default route (redirect to login if path doesn't match) */}
-                <Route path="*" element={<Login />} />
-        {/* Admin Dashboard Route */}
+      {!isAdmin && <TopContact {...contactInfo} />}
+      {!isAdmin && <Header />}
+      
+      <div className="container-fluid">
+        {isAdmin && (
+          <div className="row justify-content-center mb-3">
+            <div className="col-12">
+              <DashboardHeader />
+            </div>
+          </div>
+        )}
 
-      </Routes>
-      <Footer {...contactInfo} />
+        <div className="row justify-content-center">
+          {isAdmin && (
+            <div className="col-3 p-0">
+              <DashboardSideBar logout={logout} />
+            </div>
+          )}
+
+          <div className={isAdmin ? 'col-9' : 'col-12'}>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/home" element={<Home />} />
+              <Route path="/signup" element={<Signup />} />
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="/tours" element={<Tours />} />
+              <Route path="/tour/:id" element={<TourDetails />} />
+              <Route path="/sites" element={<Sites />} />
+              <Route path="/contact" element={<ContactUs />} />
+              <Route path="/about" element={<AboutUs />} />
+              
+              {/* Admin Dashboard Routes */}
+              {isAdmin && (
+                <>
+                  <Route path="/admin" element={<AdminDashboard />} />
+                  <Route path="/dashboard/users" element={<DashboardUsers />} />
+                  <Route path="/dashboard/guiders" element={<DashboardGuiders />} />
+                  <Route path="/dashboard/tours" element={<DashboardTours />} />
+                  <Route path="/dashboard/tours/create" element={<Create />} />
+                </>
+              )}
+
+              {/* Default route (redirect to home if path doesn't match) */}
+              <Route path="*" element={<Navigate to="/home" />} />
+            </Routes>
+          </div>
+        </div>
+      </div>
+      
+      {!isAdmin && <Footer {...contactInfo} />}
     </Router>
   );
 }

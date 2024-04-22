@@ -71,6 +71,39 @@ router.get('/users', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+//route to get user per day for user chart
+router.get('/users/chart', async (req, res) => {
+    try {
+      // Fetch users where isGuider is false
+      const users = await User.find({ isGuider: false });
+  
+      // Group users by registration date and count new users per day
+      const userCountsPerDay = users.reduce((acc, user) => {
+        const registrationDate = new Date(user.createdAt).toDateString(); // Get registration date (ignore time)
+        acc[registrationDate] = (acc[registrationDate] || 0) + 1; // Increment count for the day
+        return acc;
+      }, {});
+  
+      // Convert userCountsPerDay object into an array of objects suitable for Chart.js
+      const chartData = {
+        labels: Object.keys(userCountsPerDay),
+        datasets: [
+          {
+            label: 'New Users per Day',
+            backgroundColor: 'rgba(75,192,192,1)',
+            borderColor: 'rgba(0,0,0,1)',
+            borderWidth: 2,
+            data: Object.values(userCountsPerDay)
+          }
+        ]
+      };
+  
+      res.status(200).json(chartData);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  });
 
 //route to get all guiders
 router.get('/guiders', async (req, res) => {

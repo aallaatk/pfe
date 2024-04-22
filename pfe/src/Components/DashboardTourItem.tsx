@@ -144,7 +144,7 @@ const DashboardTourItem: React.FC<DashboardTourItemProps> = ({ tour, deleteTour,
             </div>
             <div className="col-sm-6 d-flex justify-content-end align-items-center">
               <button className="btn btn-primary me-2" onClick={() => setEditMode(true)}>
-                Edit<i className="fa-solid fa-pen-to-square ms-2" style={{color: 'ffffff;'}}></i>
+                Edit<i className="fa-solid fa-pen-to-square ms-2" style={{color: 'ffffff'}}></i>
               </button>
               <button className="btn btn-danger" onClick={handleDelete}>
                  Delete<i className="fa-solid fa-trash ms-2" style={{ color: '#ffffff' }}></i>

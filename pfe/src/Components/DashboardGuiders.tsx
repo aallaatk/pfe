@@ -81,7 +81,7 @@ function DashboardGuiders() {
   };
 
   return (
-    <div className='container'>
+    <div className='container '>
       <h2 className='text-center mt-4' style={{ fontWeight: 'bold' }}>Guiders</h2>
       {message && (
         <div className="alert alert-success" role="alert">

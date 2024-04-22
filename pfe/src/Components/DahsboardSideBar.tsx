@@ -1,66 +1,52 @@
-
-import { Sidebar, Menu, MenuItem, SubMenu } from 'react-pro-sidebar';
-import tour from '../assets/tour.png';
-import user from '../assets/user.png';
-import guider from '../assets/guider.png';
-import calendar from '../assets/calendar.png';
 import { Link } from 'react-router-dom';
-
-function DashboardSideBar() {
+import homerIcon from '../assets/home.png';
+import userIcon from '../assets/user.png';
+import guiderIcon from '../assets/guider.png';
+import tourIcon from '../assets/tour.png';
+import calendarIcon from '../assets/calendar.png';
+interface LogoutProps {
+  logout: () => void;
+}
+const DashboardSideBar: React.FC<LogoutProps> = ({logout}) => {
   return (
-    <div className='sidebar' style={{height:'100vh'}}>
-      <Sidebar>
-        <Menu>
-          <SubMenu
-            label={
+    <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-light" style={{ width: '280px' }}>
+      {/* Sidebar header/logo */}
+      <span className='h2 text-center'>General</span>
+      <hr />
+
+      {/* Sidebar navigation links */}
+      <ul className="nav nav-pills flex-column mb-auto">
+      <li className="nav-item">
+              <Link className="nav-link" to="/tours">
+              <img src={homerIcon} alt="Users Icon" className="me-2" style={{ width: '30px', height: '30px' }} />Home</Link>
             
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <img src={user} alt="User Icon" style={{ width: '30px', height: '30px', marginRight: '8px' }} />
-                  <span>Users</span>
-                </div>
-              
-            }
-          >
-            <Link to="/dashboard/users">
-              <MenuItem>Browse users</MenuItem>
-            </Link>
-            <Link to="/dashboard/user/create">
-              <MenuItem>Create a user</MenuItem>
-            </Link>
-          </SubMenu>
-          <Link to="/dashboard/guiders">
-            <MenuItem>
-              <img src={guider} alt="Guider Icon" style={{ width: '30px', height: '30px', marginRight: '8px' }} />
-              Guiders
-            </MenuItem>
-          </Link>
-          <SubMenu
-            label={
-              
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <img src={tour} alt="Tour Icon" style={{ width: '30px', height: '30px', marginRight: '8px' }} />
-                  <span>Tours</span>
-                </div>
-              
-            }
-          >
-            <Link to="/dashboard/tours">
-              <MenuItem>Browse tours</MenuItem>
-            </Link>
-            <Link to="/tours/create">
-              <MenuItem>Create a tour</MenuItem>
-            </Link>
-          </SubMenu>
-          <Link to="/dashboard/calendar">
-            <MenuItem>
-              <img src={calendar} alt="Calendar Icon" style={{ width: '30px', height: '30px', marginRight: '3px' }} />
-              Calendar
-            </MenuItem>
-          </Link>
-        </Menu>
-      </Sidebar>
+        </li>
+        <li className="nav-item">
+              <Link className="nav-link" to="/dashboard/users">
+              <img src={userIcon} alt="Users Icon" className="me-2" style={{ width: '30px', height: '30px' }} />Users</Link>
+            
+        </li>
+        <li className="nav-item">
+              <Link className="nav-link" to="/dashboard/guiders">
+              <img src={guiderIcon} alt="Users Icon" className="me-2" style={{ width: '30px', height: '30px' }} />Guiders</Link>
+            
+        </li>
+        <li className="nav-item">
+              <Link className="nav-link" to="/dashboard/tours">
+              <img src={tourIcon} alt="Users Icon" className="me-2" style={{ width: '30px', height: '30px' }} />Tours</Link>
+            
+        </li>
+        <li className="nav-item">
+              <Link className="nav-link" to="/tours">
+              <img src={calendarIcon} alt="Users Icon" className="me-2" style={{ width: '30px', height: '30px' }} />Calendar</Link>
+        </li>
+        <li className="nav-item 'me-2'">
+             <button onClick={logout} ><i className="fa-solid fa-right-from-bracket " style={{color: '#cc0014'}}></i>Log out</button>
+        </li>
+      </ul>
+     
     </div>
   );
-}
+};
 
 export default DashboardSideBar;

@@ -2,34 +2,55 @@ import React, { useState, FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
-const Login: React.FC = () => {
+interface LoginProps {
+    onLogin: (role: string) => void; // Define prop type for onLogin function
+}
+
+const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
+    const authenticateUser = async () => {
         try {
-            // Determine the login endpoint based on the provided email
             const endpoint = email.toLowerCase() === 'sleimiala@gmail.com' ? "/login/admin" : "/login/user";
-
             const response = await axios.post<{ token: string; user: { role: string } }>(
                 `http://localhost:3000${endpoint}`,
                 { email, password }
             );
 
             const { token, user } = response.data;
-
-            // Store token and role in localStorage for authentication
             localStorage.setItem('token', token);
             localStorage.setItem('role', user.role);
 
-            // Redirect user based on role
-            navigate(user.role === 'admin' ? "/admin" : "/home");
+            return user.role; // Return user role upon successful login
         } catch (error) {
-            console.error("Login failed:", error);
-            alert("Login failed. Please check your credentials.");
+            throw new Error("Login failed. Please check your credentials.");
+        }
+    };
+
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        try {
+            const role = await authenticateUser();
+
+            // Call onLogin with the role after successful authentication
+            onLogin(role);
+
+            // Redirect based on user role
+            if (role === "admin") {
+                navigate("/admin"); // Redirect admin to /admin route
+            } else {
+                navigate("/home"); // Redirect user to /home route
+            }
+        } catch (error) {
+            setError((error as Error).message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -61,7 +82,14 @@ const Login: React.FC = () => {
                             onChange={(e) => setPassword(e.target.value)}
                         />
                     </div>
-                    <button className="btn btn-primary w-100" type="submit">Login</button>
+                    {error && (
+                        <div className="alert alert-danger" role="alert">
+                            {error}
+                        </div>
+                    )}
+                    <button className="btn btn-primary w-100" type="submit" disabled={isLoading}>
+                        {isLoading ? 'Logging in...' : 'Login'}
+                    </button>
                 </form>
                 <div className="text-center mt-3">
                     <p>Don't have an account? <Link to="/signup">Sign Up</Link></p>
