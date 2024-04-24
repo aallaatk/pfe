@@ -108,7 +108,7 @@ const TourForm: React.FC = () => {
           className="form-control"
           onChange={handleImageChange}
         />
-        {formData.imageUrl && <img src={formData.imageUrl} alt="Tour Preview" className="mt-3" />}
+        {formData.imageUrl && <img src={formData.imageUrl} alt="Tour Preview" className="mt-3" style={{ width: '300px', height: '200px', objectFit: 'cover' }}/>}
       </div>
       </div>
       <div className="row mb-3">

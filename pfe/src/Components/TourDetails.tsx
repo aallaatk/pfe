@@ -66,7 +66,7 @@ const TourDetails: React.FC = () => {
             src={tourDetails.imageUrl}
             className="img-fluid mb-4"
             alt="Tour"
-            style={{ objectFit: 'cover', height: '80%', width: '100%' }}
+            style={{ objectFit: 'cover', height: '450px', width: '100%' }}
           />
           {tourDetails.description && (
             <p className="card-text pt-4" style={{ color: 'black', fontSize: '18px' }}>

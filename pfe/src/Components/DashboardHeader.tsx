@@ -1,8 +1,8 @@
 
 function DashboardHeader() {
   return (
-    <div>
-          <h1 className="text-center mt-3">Admin Dashboard</h1>
+    <div className="container-fluid bg-primary p-3"> 
+          <h1 className="text-center  " style={{color:'white'}}>Admin Dashboard</h1>
     </div>
   )
 }

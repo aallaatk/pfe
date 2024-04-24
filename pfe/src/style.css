@@ -120,6 +120,8 @@ body {
   opacity: 0; /* Initially hidden */
   transition: opacity 0.3s ease;
   font-weight: bold;
+  outline: none;
+  border: none;
 }
 
 /* Show the info button on hover */

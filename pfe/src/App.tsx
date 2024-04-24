@@ -19,6 +19,11 @@ import DashboardGuiders from './Components/DashboardGuiders';
 import AdminDashboard from './Pages/AdminDashboard';
 import DashboardHeader from './Components/DashboardHeader';
 import DashboardSideBar from './Components/DahsboardSideBar';
+import DashboardStats from './Components/DashboardStats';
+import CreateSite from './Components/CreateSite';
+import DashboardSites from './Components/DashboardSites';
+import SiteDetails from './Components/SiteDestails';
+// import CreateSite from './Components/CreateSite';
 
 
 function App() {
@@ -52,8 +57,8 @@ function App() {
       
       <div className="container-fluid">
         {isAdmin && (
-          <div className="row justify-content-center mb-3">
-            <div className="col-12">
+          <div className="row justify-content-center ">
+            <div className="col-12 m-0 p-0">
               <DashboardHeader />
             </div>
           </div>
@@ -75,17 +80,21 @@ function App() {
               <Route path="/tours" element={<Tours />} />
               <Route path="/tour/:id" element={<TourDetails />} />
               <Route path="/sites" element={<Sites />} />
+              <Route path="/sites/:id" element={<SiteDetails  />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
               
               {/* Admin Dashboard Routes */}
               {isAdmin && (
                 <>
+                <Route path="/dashboard/stats" element={<DashboardStats />} />
                   <Route path="/admin" element={<AdminDashboard />} />
                   <Route path="/dashboard/users" element={<DashboardUsers />} />
                   <Route path="/dashboard/guiders" element={<DashboardGuiders />} />
                   <Route path="/dashboard/tours" element={<DashboardTours />} />
+                  <Route path="/dashboard/sites" element={<DashboardSites />} />
                   <Route path="/dashboard/tours/create" element={<Create />} />
+                  <Route path="/dashboard/sites/create" element={<CreateSite />} />
                 </>
               )}
 
