@@ -1,123 +1,155 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import  { ChangeEvent, FormEvent, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import countryList from 'react-select-country-list';
-import { FormData, Country } from "../helpers/interfaces";
+import type { FormData,Country } from '../helpers/interfaces';
 
-function Signup() {
+const Signup: React.FC = () => {
+    const [imageFile, setImageFile] = useState<File | null>(null); // State for image file
     const [formData, setFormData] = useState<FormData>({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-        country: "",
-        gsm: "",
-        birthDate: "",
-        agreeToTerms: false,
-        isGuider: false,
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+      country: '',
+      gsm: '',
+      birthDate: '',
+      agreeToTerms: false,
+      isGuider: false,
+      imageUrl: '', // State to hold the uploaded image URL
     });
-
+  
     const [errors, setErrors] = useState<string[]>([]);
     const navigate = useNavigate();
-
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-
-        const isValidGSM = (gsm: string) => {
-            const gsmRegex = /^\d+$/;
-            return gsmRegex.test(gsm);
-        };
-
-        const isValidEmail = (email: string) => {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(email);
-        };
-
-        // Initialize errors array to store validation messages
-        const newErrors: string[] = [];
-
-        if (!formData.name.trim()) {
-            newErrors.push("Please enter your name.");
-        }
-
-        if (!formData.email.trim()) {
-            newErrors.push("Please enter your email address.");
-        } else if (!isValidEmail(formData.email)) {
-            newErrors.push("Please enter a valid email address.");
-        }
-
-        if (!formData.password.trim()) {
-            newErrors.push("Please enter a password.");
-        }
-
-        if (formData.password !== formData.confirmPassword) {
-            newErrors.push("Passwords do not match!");
-        }
-
-        if (!formData.gsm.trim()) {
-            newErrors.push("Please enter your GSM number.");
-        } else if (!isValidGSM(formData.gsm)) {
-            newErrors.push("Please enter a valid GSM number (numbers only).");
-        }
-
-        // Check if the user has agreed to terms
-        if (!formData.agreeToTerms) {
-            newErrors.push("Please agree to the terms of use.");
-        }
-
-        // Set errors state
-        setErrors(newErrors);
-
-        // If there are any errors, stop form submission
-        if (newErrors.length > 0) {
-            return;
-        }
-
-        // If no errors, proceed with form submission
-        axios.post("http://localhost:3000/signup", formData)
-    .then(result => {
-        console.log(result);
-        navigate("/login");
-    })
-    .catch(err => console.log(err));
-
-    }
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-        const { name, value, type } = e.target;
+  
+    const isValidGSM = (gsm: string) => {
+      const gsmRegex = /^\d+$/;
+      return gsmRegex.test(gsm);
+    };
+  
+    const isValidEmail = (email: string) => {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return emailRegex.test(email);
+    };
+  
+    const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+      if (e.target.files?.[0]) {
+        const selectedFile = e.target.files[0];
+        setImageFile(selectedFile); // Set the selected file to state
         setFormData({
-            ...formData,
-            [name]: type === "checkbox" ? (e.target as HTMLInputElement)?.checked : value
+          ...formData,
+          imageUrl: URL.createObjectURL(selectedFile), // Store image preview URL
         });
-    }
-
-    const handleCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setFormData({
-            ...formData,
-            country: e.target.value
-        });
-    }
-
+      }
+    };
+  
+    const handleChange = (
+      e: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    ) => {
+      const { name, value } = e.target;
+      const isCheckbox = (e.target as HTMLInputElement).type === 'checkbox';
+      setFormData({
+        ...formData,
+        [name]: isCheckbox ? (e.target as HTMLInputElement).checked : value,
+      });
+    };
+  
+    const handleCountryChange = (e: ChangeEvent<HTMLSelectElement>) => {
+      const { name, value } = e.target;
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    };
+  
     const handleSignupTypeChange = (isGuider: boolean) => {
-        setFormData({
-            ...formData,
-            isGuider,
-        });
-    }
-
-    const handleCINFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target?.files?.[0]) {
-            setFormData({
-                ...formData,
-                cinFile: e.target.files[0],
-            });
+      setFormData({
+        ...formData,
+        isGuider,
+      });
+    };
+  
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault();
+  
+      // Validate form fields
+      const newErrors: string[] = [];
+  
+      if (!formData.name.trim()) {
+        newErrors.push('Please enter your name.');
+      }
+  
+      if (!formData.email.trim()) {
+        newErrors.push('Please enter your email address.');
+      } else if (!isValidEmail(formData.email)) {
+        newErrors.push('Please enter a valid email address.');
+      }
+  
+      if (!formData.password.trim()) {
+        newErrors.push('Please enter a password.');
+      }
+  
+      if (formData.password !== formData.confirmPassword) {
+        newErrors.push('Passwords do not match!');
+      }
+  
+      if (!formData.gsm.trim()) {
+        newErrors.push('Please enter your GSM number.');
+      } else if (!isValidGSM(formData.gsm)) {
+        newErrors.push('Please enter a valid GSM number (numbers only).');
+      }
+  
+      if (!formData.agreeToTerms) {
+        newErrors.push('Please agree to the terms of use.');
+      }
+  
+      setErrors(newErrors);
+  
+      if (newErrors.length > 0) {
+        return;
+      }
+  
+      try {
+        const formDataForUpload = new FormData();
+        if (imageFile) {
+          formDataForUpload.append('file', imageFile); // Append image file to FormData
         }
-    }
-
-
-
-
-
+  
+        const cloudinaryCloudName = 'dpnba7vok';
+        const uploadPreset = 'tuzria4w';
+  
+        const cloudinaryResponse = await axios.post(
+          `https://api.cloudinary.com/v1_1/${cloudinaryCloudName}/image/upload`,
+          formDataForUpload,
+          {
+            params: {
+              upload_preset: uploadPreset,
+            },
+          }
+        );
+  
+        console.log('Cloudinary Response:', cloudinaryResponse.data);
+  
+        // Prepare form data for signup request
+        const newUserFormData: FormData = {
+          ...formData,
+          imageUrl: cloudinaryResponse.data.secure_url,
+        };
+  
+        // Make signup request with user data including image URL
+        const response = await axios.post(
+          'http://localhost:3000/signup',
+          newUserFormData
+        );
+  
+        console.log('Signup successful:', response.data);
+        navigate('/login');
+      } catch (error) {
+        console.error('Signup error:', error);
+      }
+    };
+  
+  
     
     return (
         <div className="container mt-5">
@@ -255,19 +287,20 @@ function Signup() {
                                 />
                                 <label className="form-check-label" htmlFor="signupGuider">Sign up as a Guider</label>
                             </div>
-                            {formData.isGuider && (
-                                <div className="mb-3">
-                                    <label htmlFor="cinFile"><strong>Upload CIN or Passport</strong></label>
-                                    <input
-                                        type="file"
-                                        name="cinFile"
-                                        accept=".pdf,.doc,.docx"
-                                        className={`form-control ${errors.includes("Please upload CIN or Passport file.") ? "is-invalid" : ""}`}
-                                        onChange={handleCINFileChange}
-                                    />
-                                    {errors.includes("Please upload CIN or Passport file.") && <span className="invalid-feedback" style={{ color: 'red' }}>Please upload CIN or Passport file.</span>}
-                                </div>
-                            )}
+                            <div className="mb-3">
+                <label htmlFor="image"><strong>Profile Picture</strong></label>
+                <input type="file" accept="image/*" onChange={handleImageChange} />
+                {formData.imageUrl && (
+                  <img
+                    src={formData.imageUrl}
+                    alt="Profile Preview"
+                    className="mt-3"
+                    style={{ width: '150px', height: '150px', objectFit: 'cover' }}
+                  />
+                )}
+              </div>
+                           
+                           
                             <button className="btn btn-grad w-100" type="submit">Sign up</button>
                         </form>
                         <p className="text-center mt-3">Already have an account? <Link to="/login">Login</Link></p>

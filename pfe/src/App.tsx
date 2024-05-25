@@ -11,24 +11,38 @@ import ContactUs from './Pages/ContactUs';
 import AboutUs from './Pages/AboutUs';
 import Tours from './Pages/Tours';
 import TourDetails from './Components/TourDetails';
-import DashboardTours from './Components/DashboardTours';
-import Create from './Components/Create';
 import Home from './Pages/Home';
-import DashboardUsers from './Components/DashboardUsers';
-import DashboardGuiders from './Components/DashboardGuiders';
-import AdminDashboard from './Pages/AdminDashboard';
 import DashboardHeader from './Components/DashboardHeader';
 import DashboardSideBar from './Components/DahsboardSideBar';
 import DashboardStats from './Components/DashboardStats';
+import DashboardUsers from './Components/DashboardUsers';
+import DashboardGuiders from './Components/DashboardGuiders';
+import DashboardTours from './Components/DashboardTours';
+import Create from './Components/Create';
 import CreateSite from './Components/CreateSite';
 import DashboardSites from './Components/DashboardSites';
 import SiteDetails from './Components/SiteDestails';
-// import CreateSite from './Components/CreateSite';
+import GuiderDashboard from './Pages/GuiderDashboard';
+import UserDasboard from './Pages/UserDasboard';
 
+function DashboardRoutes() {
+  return (
+    <Routes>
+      <Route path="stats" element={<DashboardStats />} />
+      <Route path="users" element={<DashboardUsers />} />
+      <Route path="guiders" element={<DashboardGuiders />} />
+      <Route path="tours" element={<DashboardTours />} />
+      <Route path="sites" element={<DashboardSites />} />
+      <Route path="tours/create" element={<Create />} />
+      <Route path="sites/create" element={<CreateSite />} />
+      <Route path="*" element={<Navigate to="stats" />} />
+    </Routes>
+  );
+}
 
 function App() {
   const [isAdmin, setIsAdmin] = useState<boolean>(false);
-
+ 
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role === 'admin') {
@@ -83,20 +97,11 @@ function App() {
               <Route path="/sites/:id" element={<SiteDetails  />} />
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/guide" element={<GuiderDashboard />} />
+              <Route path="/user" element={<UserDasboard />} />
               
               {/* Admin Dashboard Routes */}
-              {isAdmin && (
-                <>
-                <Route path="/dashboard/stats" element={<DashboardStats />} />
-                  <Route path="/admin" element={<AdminDashboard />} />
-                  <Route path="/dashboard/users" element={<DashboardUsers />} />
-                  <Route path="/dashboard/guiders" element={<DashboardGuiders />} />
-                  <Route path="/dashboard/tours" element={<DashboardTours />} />
-                  <Route path="/dashboard/sites" element={<DashboardSites />} />
-                  <Route path="/dashboard/tours/create" element={<Create />} />
-                  <Route path="/dashboard/sites/create" element={<CreateSite />} />
-                </>
-              )}
+              {isAdmin && <Route path="dashboard/*" element={<DashboardRoutes />} />}
 
               {/* Default route (redirect to home if path doesn't match) */}
               <Route path="*" element={<Navigate to="/home" />} />

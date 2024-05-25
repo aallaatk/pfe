@@ -24,6 +24,11 @@ const login = async (email, password) => {
 
         let role = 'user'; // Default role for regular users
 
+        // Check if the user is a guide
+        if (user.isGuider) {
+            role = 'guider';
+        }
+
         // Check if the provided email matches admin email
         if (email.toLowerCase() === 'sleimiala@gmail.com') {
             role = 'admin';

@@ -140,7 +140,7 @@ function Tours(): JSX.Element {
                 })
               }
             >
-              {['Europe', 'Asia', 'North America', 'South America'].map((location) => (
+              {['Beach', 'Sahara', 'Madina', 'Souk'].map((location) => (
                 <option key={location} value={location}>
                   {location}
                 </option>
@@ -257,7 +257,7 @@ function Tours(): JSX.Element {
       ) : (
         <p className="text-center">
           No tours available? <br />
-          <Link to="/tour/create">Create your own adventure</Link>
+          <Link to="/login">Create your own adventure</Link>
         </p>
       )}
     </div>

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import Stats from '../Components/Stats';
 import axios from 'axios';
+import StatisticsDashboard from './StatisticsDashboard';
 
 function DashboardStats() {
     const [stats, setStats] = useState({
@@ -26,13 +27,12 @@ function DashboardStats() {
     
     return (
        
-            <Stats
-                tours={stats.tours}
-                users={stats.users}
-                sites={stats.sites}
-                guiders={stats.guiders}
-            />
-     
+            <><Stats
+            tours={stats.tours}
+            users={stats.users}
+            sites={stats.sites}
+            guiders={stats.guiders} />
+            <StatisticsDashboard /></>
     );
 }
 

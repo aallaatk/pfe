@@ -4,7 +4,8 @@ import homerIcon from '../assets/home.png';
 import userIcon from '../assets/user.png';
 import guiderIcon from '../assets/guider.png';
 import tourIcon from '../assets/tour.png';
-import calendarIcon from '../assets/calendar.png';
+import calan from '../assets/calendar.png';
+import calendarIcon from '../assets/ss.png';
 
 interface LogoutProps {
   logout: () => void;
@@ -12,7 +13,7 @@ interface LogoutProps {
 
 const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
   return (
-    <div className="d-flex flex-column flex-shrink-0 p-3 text-white bg-dark m-0 p-0" style={{ width: '280px' }}>
+    <div className="d-flex flex-column flex-shrink-0 p-3 text-white m-0 p-0" style={{ width: '280px' }}>
       {/* Sidebar header/logo */}
       <span className="h2 text-center">General</span>
       <hr />
@@ -77,10 +78,16 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
             </li>
             <li>
               <Link to="/dashboard/sites/create" className="dropdown-item">
-                Create a site
+                Create a Site
               </Link>
             </li>
           </ul>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/dashboard/calendar">
+            <img src={calan} alt="Calendar Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
+            Calendar
+          </Link>
         </li>
         {/* LOGOUT */}
         <li className="nav-item">
@@ -95,12 +102,3 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
 };
 
 export default DashboardSideBar;
-
-
-
-<li className="nav-item">
-          <Link className="nav-link" to="/tours">
-            <img src={calendarIcon} alt="Calendar Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
-            Calendar
-          </Link>
-        </li>

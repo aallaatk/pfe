@@ -1,6 +1,5 @@
 import mongoose from 'mongoose';
 
-
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -9,8 +8,8 @@ const userSchema = new mongoose.Schema({
     gsm: { type: String },
     birthDate: { type: Date },
     isGuider: { type: Boolean },
-    cinFile: { type: String },
-    role: { type: String, enum: ['user', 'admin'], default: 'user' }
+    role: { type: String, enum: ['user', 'admin', 'guider'], default: 'user' }, // Updated enum to include 'guider'
+    imageUrl: { type: String }
 });
 
 const User = mongoose.model('User', userSchema, 'Users');

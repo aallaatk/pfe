@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 interface LoginProps {
-    onLogin: (role: string) => void; // Define prop type for onLogin function
+    onLogin: (role: string) => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onLogin }) => {
@@ -25,7 +25,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             localStorage.setItem('token', token);
             localStorage.setItem('role', user.role);
 
-            return user.role; // Return user role upon successful login
+            return user.role;
         } catch (error) {
             throw new Error("Login failed. Please check your credentials.");
         }
@@ -37,15 +37,14 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
 
         try {
             const role = await authenticateUser();
-
-            // Call onLogin with the role after successful authentication
             onLogin(role);
 
-            // Redirect based on user role
             if (role === "admin") {
-                navigate("/admin"); // Redirect admin to /admin route
+                navigate("/admin");
+            } else if (role === "guider") { // Redirect guider to /guide route
+                navigate("/guide");
             } else {
-                navigate("/home"); // Redirect user to /home route
+                navigate("/user");
             }
         } catch (error) {
             setError((error as Error).message);

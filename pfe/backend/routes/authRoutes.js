@@ -7,25 +7,25 @@ const router = express.Router();
 
 router.post('/signup', async (req, res) => {
     try {
-        const { name, email, password, country, gsm, birthDate, isGuider, cinFile } = req.body;
+        const { name, email, password, country, gsm, birthDate, imageUrl, isGuider } = req.body;
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const user = new User({
+        const newUser = new User({
             name,
             email,
             password: hashedPassword,
             country,
             gsm,
             birthDate,
-            isGuider,
-            cinFile: cinFile ? cinFile.path : null,
-            role: 'user' // Assign default role as 'user' upon signup
+            isGuider, // Use the provided isGuider value
+            role: isGuider ? 'guider' : 'user', // Set role based on isGuider
+            imageUrl
         });
 
-        await user.save();
+        await newUser.save();
 
-        console.log('User registered:', user);
+        console.log('User registered:', newUser);
 
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
@@ -38,7 +38,16 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const { success, token, user, message } = await login(email, password);
 
+    if (success) {
+        return res.status(200).json({ token, user });
+    } else {
+        return res.status(401).json({ message });
+    }
+});
 router.post('/login/user', async (req, res) => {
     const { email, password } = req.body;
     const { success, token, user, message } = await login(email, password);
@@ -47,6 +56,17 @@ router.post('/login/user', async (req, res) => {
         return res.status(200).json({ token, user });
     } else {
         return res.status(401).json({ message });
+    }
+});
+// Route for guider login
+router.post('/login/guider', async (req, res) => {
+    const { email, password } = req.body;
+    const { success, token, user} = await login(email, password);
+
+    if (success && user.role === 'guider') {
+        return res.status(200).json({ token, user });
+    } else {
+        return res.status(401).json({ message: 'Unauthorized' });
     }
 });
 
@@ -61,6 +81,7 @@ router.post('/login/admin', async (req, res) => {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 });
+
 //router to get all users
 router.get('/users', async (req, res) => {
     try {
@@ -152,7 +173,7 @@ router.put('/guiders/:id', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
-//deltee  fguider by id
+//deltee  guider by id
 router.delete('/guiders/:id', async (req, res) => {
     const { id } = req.params;
 

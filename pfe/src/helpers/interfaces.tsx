@@ -13,5 +13,5 @@
     birthDate: string;
     agreeToTerms: boolean;
     isGuider: boolean;
-    cinFile?: File;
+    imageUrl:string;
 }

@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Site from '../Components/Site';
 
-
 interface SiteData {
   _id: string;
   sitename: string;
@@ -14,6 +13,7 @@ interface SiteData {
 const Sites: React.FC = () => {
   const [sitesData, setSitesData] = useState<SiteData[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [searchQuery, setSearchQuery] = useState<string>('');
 
   useEffect(() => {
     const fetchSites = async () => {
@@ -35,14 +35,31 @@ const Sites: React.FC = () => {
     fetchSites();
   }, []);
 
+  const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const filteredSites = sitesData.filter((site) =>
+    site.sitename.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
   return (
     <div className="container my-5">
       <h2 className="text-center mb-4">Explore Sites</h2>
+      <div className="mb-4">
+        <input
+          type="text"
+          className="form-control"
+          placeholder="Search sites by name..."
+          value={searchQuery}
+          onChange={handleSearchChange}
+        />
+      </div>
       {loading ? (
         <p className="text-center">Loading...</p>
-      ) : sitesData.length > 0 ? (
+      ) : filteredSites.length > 0 ? (
         <div className="row">
-          {sitesData.map((site) => (
+          {filteredSites.map((site) => (
             <div className="col-md-4 mb-4" key={site._id}>
               <Site id={site._id} siteimages={site.siteimages} />
             </div>
