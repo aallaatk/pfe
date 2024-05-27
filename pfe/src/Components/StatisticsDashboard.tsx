@@ -14,7 +14,7 @@ const StatisticsDashboard: React.FC = () => {
   useEffect(() => {
     const fetchStatistics = async () => {
       try {
-        const response = await axios.get<StatisticsData>('/stats');
+        const response = await axios.get<StatisticsData>('http://localhost:3000/stats');
         setStatistics(response.data);
       } catch (error) {
         console.error('Error fetching statistics:', error);

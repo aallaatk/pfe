@@ -16,7 +16,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
     const authenticateUser = async () => {
         try {
             const endpoint = email.toLowerCase() === 'sleimiala@gmail.com' ? "/login/admin" : "/login/user";
-            const response = await axios.post<{ token: string; user: { role: string } }>(
+            const response = await axios.post<{ token: string; user: { role: string, _id: string } }>(
                 `http://localhost:3000${endpoint}`,
                 { email, password }
             );
@@ -24,6 +24,7 @@ const Login: React.FC<LoginProps> = ({ onLogin }) => {
             const { token, user } = response.data;
             localStorage.setItem('token', token);
             localStorage.setItem('role', user.role);
+            localStorage.setItem('userId', user._id); // Store user ID in local storage
 
             return user.role;
         } catch (error) {

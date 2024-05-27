@@ -3,7 +3,7 @@ import axios from 'axios';
 
 interface NewTour {
   tourname: string;
-  creator: string;
+  creator: string; // should be ObjectId string
   date: string;
   price: number;
   description?: string;
@@ -17,7 +17,7 @@ const TourForm: React.FC = () => {
   const initialFormData: NewTour = {
     imageUrl: '',
     tourname: '',
-    creator: '',
+    creator: '', // this should be populated with an ObjectId string
     date: new Date().toISOString().split('T')[0],
     price: 0,
     description: '',
@@ -29,6 +29,7 @@ const TourForm: React.FC = () => {
   const [formData, setFormData] = useState<NewTour>(initialFormData);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
+
   const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -81,6 +82,12 @@ const TourForm: React.FC = () => {
         ...formData,
         imageUrl: cloudinaryResponse.data.secure_url,
       };
+
+      // Assuming you have the user's ID stored in localStorage
+      const userId = localStorage.getItem('userId');
+      if (userId) {
+        newTour.creator = userId;
+      }
 
       const backendResponse = await axios.post('http://localhost:3000/api/tours/create', newTour);
 

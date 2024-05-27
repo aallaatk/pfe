@@ -51,7 +51,7 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
           </span>
 
           {/* Dropdown menu */}
-          <ul className="dropdown-menu  bg-dark">
+          <ul className="dropdown-menu  ">
             <li>
               <Link to="/dashboard/tours" className="dropdown-item">
                 Browse Tours
@@ -70,7 +70,7 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
             <img src={calendarIcon} alt="Calendar Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
             Sites
           </span>
-          <ul className="dropdown-menu bg-dark">
+          <ul className="dropdown-menu ">
             <li>
               <Link to="/dashboard/sites" className="dropdown-item">
                 Browse Sites
@@ -92,7 +92,7 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
         {/* LOGOUT */}
         <li className="nav-item">
           <button onClick={logout} className="nav-link">
-            <i className="fa-solid fa-right-from-bracket" style={{ color: '#cc0014' }}></i>
+            <i className="fa-solid fa-right-from-bracket me-3" style={{ color: '#cc0014' }}></i>
             Log out
           </button>
         </li>

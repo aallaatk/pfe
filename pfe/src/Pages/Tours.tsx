@@ -43,14 +43,8 @@ function Tours(): JSX.Element {
     const fetchTours = async () => {
       try {
         const response = await axios.get<NewTourInfo[]>('http://localhost:3000/api/tours');
-
         if (Array.isArray(response.data)) {
-          // Map the response data to include the id field and setTours
-          const toursWithId = response.data.map((tour) => ({
-            ...tour,
-            id: tour._id, // Assign the id from the _id field of each tour
-          }));
-          setTours(toursWithId);
+          setTours(response.data);
         } else {
           console.error('API response is not an array:', response.data);
         }
@@ -75,21 +69,15 @@ function Tours(): JSX.Element {
       endDate,
     } = filters;
 
-    const matchesLocation =
-      location.length === 0 || location.includes(tour.location ?? '');
-
-    const matchesPrice =
-      (minPrice === '' || tour.price >= Number(minPrice)) &&
-      (maxPrice === '' || tour.price <= Number(maxPrice));
-    const matchesAttendees =
-      (minAttendees === '' ||
-        (tour.attendees !== undefined && tour.attendees >= Number(minAttendees))) &&
-      (maxAttendees === '' ||
-        (tour.attendees !== undefined && tour.attendees <= Number(maxAttendees)));
-    const matchesDate =
-      (startDate === '' || new Date(tour.date) >= new Date(startDate)) &&
-      (endDate === '' || new Date(tour.date) <= new Date(endDate));
-
+    const matchesLocation = location.length === 0 || location.includes(tour.location ?? '');
+    const matchesPrice = (minPrice === '' || tour.price >= Number(minPrice)) &&
+                         (maxPrice === '' || tour.price <= Number(maxPrice));
+    const matchesAttendees = (minAttendees === '' || 
+                             (tour.attendees !== undefined && tour.attendees >= Number(minAttendees))) &&
+                             (maxAttendees === '' || 
+                             (tour.attendees !== undefined && tour.attendees <= Number(maxAttendees)));
+    const matchesDate = (startDate === '' || new Date(tour.date) >= new Date(startDate)) &&
+                        (endDate === '' || new Date(tour.date) <= new Date(endDate));
     const matchesSearch = tour.tourname.toLowerCase().includes(searchQuery.toLowerCase());
 
     return matchesLocation && matchesPrice && matchesAttendees && matchesDate && matchesSearch;
@@ -104,7 +92,7 @@ function Tours(): JSX.Element {
         {/* Search input */}
         <input
           type="text"
-          className="form-control mb-3 w-50 "
+          className="form-control mb-3 w-50"
           placeholder="Search by tour name"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -122,9 +110,7 @@ function Tours(): JSX.Element {
         <div className="mb-4">
           {/* Location filter */}
           <div className="mb-3">
-            <label htmlFor="locationFilter" className="form-label">
-              Location
-            </label>
+            <label htmlFor="locationFilter" className="form-label">Location</label>
             <select
               id="locationFilter"
               className="form-select"
@@ -133,10 +119,7 @@ function Tours(): JSX.Element {
               onChange={(e) =>
                 setFilters({
                   ...filters,
-                  location: Array.from(
-                    e.target.selectedOptions,
-                    (option) => option.value
-                  ),
+                  location: Array.from(e.target.selectedOptions, (option) => option.value),
                 })
               }
             >
@@ -150,9 +133,7 @@ function Tours(): JSX.Element {
           {/* Price range filter */}
           <div className="row mb-3">
             <div className="col">
-              <label htmlFor="minPrice" className="form-label">
-                Min Price
-              </label>
+              <label htmlFor="minPrice" className="form-label">Min Price</label>
               <input
                 type="number"
                 id="minPrice"
@@ -163,9 +144,7 @@ function Tours(): JSX.Element {
               />
             </div>
             <div className="col">
-              <label htmlFor="maxPrice" className="form-label">
-                Max Price
-              </label>
+              <label htmlFor="maxPrice" className="form-label">Max Price</label>
               <input
                 type="number"
                 id="maxPrice"
@@ -179,9 +158,7 @@ function Tours(): JSX.Element {
           {/* Attendees filter */}
           <div className="row mb-3">
             <div className="col">
-              <label htmlFor="minAttendees" className="form-label">
-                Min Attendees
-              </label>
+              <label htmlFor="minAttendees" className="form-label">Min Attendees</label>
               <input
                 type="number"
                 id="minAttendees"
@@ -192,9 +169,7 @@ function Tours(): JSX.Element {
               />
             </div>
             <div className="col">
-              <label htmlFor="maxAttendees" className="form-label">
-                Max Attendees
-              </label>
+              <label htmlFor="maxAttendees" className="form-label">Max Attendees</label>
               <input
                 type="number"
                 id="maxAttendees"
@@ -208,9 +183,7 @@ function Tours(): JSX.Element {
           {/* Date range filter */}
           <div className="row mb-3">
             <div className="col">
-              <label htmlFor="startDate" className="form-label">
-                Start Date
-              </label>
+              <label htmlFor="startDate" className="form-label">Start Date</label>
               <input
                 type="date"
                 id="startDate"
@@ -220,9 +193,7 @@ function Tours(): JSX.Element {
               />
             </div>
             <div className="col">
-              <label htmlFor="endDate" className="form-label">
-                End Date
-              </label>
+              <label htmlFor="endDate" className="form-label">End Date</label>
               <input
                 type="date"
                 id="endDate"
@@ -238,25 +209,21 @@ function Tours(): JSX.Element {
         <p className="text-center">Loading...</p>
       ) : filteredTours.length > 0 ? (
         <div className="row">
-          {filteredTours.map((tour, index) => (
-            <div className="col-md-4 mb-4 mt-5" key={index}>
-              {tour.imageUrl && (
-                <Tour
-                  key={tour._id}
-                  tourname={tour.tourname}
-                  creator={tour.creator}
-                  date={tour.date}
-                  price={tour.price}
-                  imageUrl={tour.imageUrl}
-                  id={tour._id}
-                />
-              )}
+          {filteredTours.map((tour) => (
+            <div className="col-md-4 mb-4 mt-5" key={tour._id}>
+              <Tour
+                tourname={tour.tourname}
+                creator={tour.creator}
+                date={tour.date}
+                price={tour.price}
+
+                id={tour._id} imageUrl={tour.imageUrl}              />
             </div>
           ))}
         </div>
       ) : (
         <p className="text-center">
-          No tours available? <br />
+          No tours available. <br />
           <Link to="/login">Create your own adventure</Link>
         </p>
       )}

@@ -6,9 +6,10 @@ import authRoutes from './routes/authRoutes.js'; // Import your authRoutes
 import tourRoutes from './routes/tours.js';
 import siteRoutes from './routes/sites.js';
 import statsRouter from './routes/Stats.js'; // Import your tourRoutes
+import stripe from './routes/StripePayment.js';
 import upload from './multerConfig.js';
 const PORT = 3000;
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
 const server = express();
 
 // Middleware setup
@@ -27,6 +28,7 @@ server.use('', authRoutes);
 server.use('', tourRoutes);
 server.use('', statsRouter);
 server.use('', siteRoutes)
+server.use('', stripe)
 // Start the server
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

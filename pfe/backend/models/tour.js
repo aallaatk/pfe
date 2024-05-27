@@ -9,7 +9,8 @@ const tourSchema = new mongoose.Schema({
   attendees: { type: Number },
   location: { type: String },
   duration: { type: String },
-  imageUrl: { type: String }, // Add imageUrl field
+  imageUrl: { type: String },
+  reservedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Array of user IDs // Add imageUrl field
 });
 
 const Tour = mongoose.model('Tour', tourSchema);

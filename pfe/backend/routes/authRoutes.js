@@ -81,7 +81,40 @@ router.post('/login/admin', async (req, res) => {
         return res.status(401).json({ message: 'Unauthorized' });
     }
 });
+// Route to get a user by ID
+router.get('/info/user/:id', async (req, res) => {
+    const { id } = req.params; // Extract the user ID from the request parameters
 
+    try {
+        const user = await User.findById(id); // Find the user by their ID
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' }); // If user is not found, return 404 error
+        }
+
+        res.status(200).json(user); // If user is found, return user data
+    } catch (error) {
+        console.error('Error fetching user:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+// Route to get a guider by ID
+router.get('/guiders/info/:id', async (req, res) => {
+    const { id } = req.params; // Extract the guider ID from the request parameters
+
+    try {
+        const guider = await User.findById(id); // Find the guider by their ID
+
+        if (!guider) {
+            return res.status(404).json({ message: 'Guider not found' }); // If guider is not found, return 404 error
+        }
+
+        res.status(200).json(guider); // If guider is found, return guider data
+    } catch (error) {
+        console.error('Error fetching guider:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 //router to get all users
 router.get('/users', async (req, res) => {
     try {
@@ -91,9 +124,7 @@ router.get('/users', async (req, res) => {
         console.error('Error fetching users:', error);
         res.status(500).json({ message: 'Internal server error' });
     }
-});
-//route to get user per day for user chart
-router.get('/users/chart', async (req, res) => {
+});router.get('/dashboard/users/chart', async (req, res) => {
     try {
       // Fetch users where isGuider is false
       const users = await User.find({ isGuider: false });
@@ -107,7 +138,7 @@ router.get('/users/chart', async (req, res) => {
   
       // Convert userCountsPerDay object into an array of objects suitable for Chart.js
       const chartData = {
-        labels: Object.keys(userCountsPerDay),
+        labels: Object.keys(userCountsPerDay).map(dateString => new Date(dateString)), // Convert labels to Date objects
         datasets: [
           {
             label: 'New Users per Day',
@@ -126,6 +157,7 @@ router.get('/users/chart', async (req, res) => {
     }
   });
 
+
 //route to get all guiders
 router.get('/guiders', async (req, res) => {
     try {
@@ -137,7 +169,7 @@ router.get('/guiders', async (req, res) => {
     }
 });
 //update guider by id
-router.put('/guiders/:id', async (req, res) => {
+router.put('/guiders/update/:id', async (req, res) => {
     const { id } = req.params;
     const { name, email, country, gsm, birthDate, cinFile } = req.body;
 
@@ -261,6 +293,64 @@ router.delete('/users/:id', async (req, res) => {
     }
 });
 
+
+
+
+
+
+// Route to get user count
+router.get('/stats/users/count', async (req, res) => {
+    try {
+        const userCount = await User.countDocuments({ isGuider: false });
+        res.status(200).json({ userCount });
+    } catch (error) {
+        console.error('Error fetching user count:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to get guider count
+router.get('/stats/guiders/count', async (req, res) => {
+    try {
+        const guiderCount = await User.countDocuments({ isGuider: true });
+        res.status(200).json({ guiderCount });
+    } catch (error) {
+        console.error('Error fetching guider count:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to get new users per day
+router.get('/stats/users/new-per-day', async (req, res) => {
+    try {
+        const users = await User.find({ isGuider: false });
+        const userCountsPerDay = users.reduce((acc, user) => {
+            const registrationDate = new Date(user.createdAt).toDateString();
+            acc[registrationDate] = (acc[registrationDate] || 0) + 1;
+            return acc;
+        }, {});
+        res.status(200).json(userCountsPerDay);
+    } catch (error) {
+        console.error('Error fetching new users per day:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
+// Route to get new guiders per day
+router.get('/stats/guiders/new-per-day', async (req, res) => {
+    try {
+        const guiders = await User.find({ isGuider: true });
+        const guiderCountsPerDay = guiders.reduce((acc, guider) => {
+            const registrationDate = new Date(guider.createdAt).toDateString();
+            acc[registrationDate] = (acc[registrationDate] || 0) + 1;
+            return acc;
+        }, {});
+        res.status(200).json(guiderCountsPerDay);
+    } catch (error) {
+        console.error('Error fetching new guiders per day:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
 
 
 export default router;

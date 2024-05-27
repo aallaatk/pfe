@@ -100,4 +100,126 @@ router.put('/api/tours/:id', async (req, res) => {
   }
 });
 
+// POST route to book a specific tour by ID
+router.post('/api/tours/book/:id', async (req, res) => {
+  const { id } = req.params;
+  const { userId } = req.body;
+
+  // Check if 'id' is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ message: 'Invalid tour ID' });
+  }
+
+  // Validate userId
+  if (!userId) {
+    return res.status(400).json({ message: 'User ID is required' });
+  }
+
+  try {
+    const tour = await Tour.findById(id);
+
+    if (!tour) {
+      return res.status(404).json({ message: 'Tour not found' });
+    }
+
+    // Check if tour is already booked by the user
+    if (tour.reservedBy.includes(userId)) {
+      return res.status(400).json({ message: 'Tour already booked by this user' });
+    }
+
+    // Assume `reservedBy` is an array field in the Tour schema
+    tour.reservedBy.push(userId);
+    await tour.save();
+
+    res.status(200).json({ message: 'Tour booked successfully' });
+  } catch (error) {
+    console.error('Error booking tour:', error);
+    res.status(500).json({ message: 'Failed to book tour' });
+  }
+});
+
+
+
+
+// GET route to retrieve all tours created by a specific user
+router.get('/api/tours/user/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  // Check if 'userId' is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const tours = await Tour.find({ creator: userId });
+    if (tours.length === 0) {
+      return res.status(404).json({ message: 'No tours found for this user' });
+    }
+    res.status(200).json(tours);
+  } catch (error) {
+    console.error('Error retrieving tours by user ID:', error);
+    res.status(500).json({ message: 'Failed to retrieve tours' });
+  }
+});
+// GET route to retrieve all tours created by a specific guider
+router.get('/api/tours/guider/:guiderId', async (req, res) => {
+  const { guiderId } = req.params;
+
+  // Check if 'guiderId' is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(guiderId)) {
+    return res.status(400).json({ message: 'Invalid guider ID' });
+  }
+
+  try {
+    const tours = await Tour.find({ creator: guiderId });
+    if (tours.length === 0) {
+      return res.status(404).json({ message: 'No tours found for this guider' });
+    }
+    res.status(200).json(tours);
+  } catch (error) {
+    console.error('Error retrieving tours by guider ID:', error);
+    res.status(500).json({ message: 'Failed to retrieve tours' });
+  }
+});
+
+// GET route to retrieve all tours reserved by a specific user
+router.get('/api/tours/reserved/:userId', async (req, res) => {
+  const { userId } = req.params;
+
+  // Check if 'userId' is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ message: 'Invalid user ID' });
+  }
+
+  try {
+    const tours = await Tour.find({ reservedBy: userId });
+    if (tours.length === 0) {
+      return res.status(404).json({ message: 'No tours reserved by this user' });
+    }
+    res.status(200).json(tours);
+  } catch (error) {
+    console.error('Error retrieving reserved tours by user ID:', error);
+    res.status(500).json({ message: 'Failed to retrieve reserved tours' });
+  }
+});
+// GET route to retrieve all tours reserved by a specific guider
+router.get('/api/tours/reserved/guider/:guiderId', async (req, res) => {
+  const { guiderId } = req.params;
+
+  // Check if 'guiderId' is a valid ObjectId
+  if (!mongoose.Types.ObjectId.isValid(guiderId)) {
+    return res.status(400).json({ message: 'Invalid guider ID' });
+  }
+
+  try {
+    const tours = await Tour.find({ reservedBy: guiderId });
+    if (tours.length === 0) {
+      return res.status(404).json({ message: 'No tours reserved by this guider' });
+    }
+    res.status(200).json(tours);
+  } catch (error) {
+    console.error('Error retrieving reserved tours by guider ID:', error);
+    res.status(500).json({ message: 'Failed to retrieve reserved tours' });
+  }
+});
 export default router;

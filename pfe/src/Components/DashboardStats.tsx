@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
-import Stats from '../Components/Stats';
+
 import axios from 'axios';
 import StatisticsDashboard from './StatisticsDashboard';
+import Stats from './Stats';
 
 function DashboardStats() {
     const [stats, setStats] = useState({
