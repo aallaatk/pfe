@@ -1,8 +1,15 @@
 import { useState, useEffect } from 'react';
 
 import axios from 'axios';
-import StatisticsDashboard from './StatisticsDashboard';
+
 import Stats from './Stats';
+
+import DashUserChart from './DashUserChart';
+import DashTourChart from './DashTourStats';
+import PieUserChart from './PieUserchart';
+import PieTourChart from './PieTourChart';
+
+import LineChart from './LineChart';
 
 function DashboardStats() {
     const [stats, setStats] = useState({
@@ -33,7 +40,23 @@ function DashboardStats() {
             users={stats.users}
             sites={stats.sites}
             guiders={stats.guiders} />
-            <StatisticsDashboard /></>
+           <LineChart/>
+            <DashUserChart/>
+            <DashTourChart/>
+            <div className='container'>
+            <div className="row">
+                <div className="col-sm-6">
+            <PieUserChart/>
+            </div>
+            <div className="col-sm-6">
+            
+            <PieTourChart/>
+            </div>
+            </div>
+        </div>
+        
+                </>
+
     );
 }
 

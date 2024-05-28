@@ -20,7 +20,8 @@ router.post('/signup', async (req, res) => {
             birthDate,
             isGuider, // Use the provided isGuider value
             role: isGuider ? 'guider' : 'user', // Set role based on isGuider
-            imageUrl
+            imageUrl,
+            createdAt: new Date() // Capture the current date as the creation date
         });
 
         await newUser.save();

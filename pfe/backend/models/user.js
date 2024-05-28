@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     birthDate: { type: Date },
     isGuider: { type: Boolean },
     role: { type: String, enum: ['user', 'admin', 'guider'], default: 'user' }, // Updated enum to include 'guider'
-    imageUrl: { type: String }
+    imageUrl: { type: String },
+    createdAt: { type: Date, default: Date.now } // Define createdAt field with default value
 });
 
 const User = mongoose.model('User', userSchema, 'Users');

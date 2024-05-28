@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import homerIcon from '../assets/home.png';
-import guiderIcon from '../assets/guider.png';
+import cart from '../assets/cart.png';
 import tourIcon from '../assets/tour.png';
 
 interface LogoutProps {
@@ -45,17 +45,13 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
                 Created Tours
               </Link>
             </li>
-            <li>
-              <Link to="/guider/tour/reserved" className="dropdown-item">
-                Reserved tours
-              </Link>
-            </li>
+          
           </ul>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/dashboard/guiders">
-            <img src={guiderIcon} alt="Guiders Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
-            Guiders
+          <Link className="nav-link" to="/guider/tour/reserved">
+            <img src={cart} alt="Guiders Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
+          Cart
           </Link>
         </li>
         {/* LOGOUT */}

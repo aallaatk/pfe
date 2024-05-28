@@ -10,7 +10,9 @@ const tourSchema = new mongoose.Schema({
   location: { type: String },
   duration: { type: String },
   imageUrl: { type: String },
-  reservedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }] // Array of user IDs // Add imageUrl field
+ 
+  reservedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  createdAt: { type: Date, default: Date.now } , // Array of user IDs // Add imageUrl field
 });
 
 const Tour = mongoose.model('Tour', tourSchema);

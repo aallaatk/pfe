@@ -4,7 +4,8 @@ const siteSchema = new mongoose.Schema({
   sitename: { type: String, required: true },
   sitedescription: { type: String },
   sitelocation: { type: String },
-  siteimages: [{ type: String }], // Array of image URLs
+  siteimages: [{ type: String }],
+  createdAt: { type: Date, default: Date.now }  // Array of image URLs
  
 });
 

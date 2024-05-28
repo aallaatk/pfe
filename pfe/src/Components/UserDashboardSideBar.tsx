@@ -45,15 +45,11 @@ const DashboardSideBar: React.FC<LogoutProps> = ({ logout }) => {
                 Created Tours
               </Link>
             </li>
-            <li>
-              <Link to="/user/tour/reserved" className="dropdown-item">
-                Reserved tours
-              </Link>
-            </li>
+            
           </ul>
         </li>
         <li className="nav-item">
-          <Link className="nav-link" to="/dashboard/guiders">
+          <Link className="nav-link" to="/user/tour/reserved">
             <img src={cart} alt="Guiders Icon" className="me-2" style={{ width: '30px', height: '30px' }} />
             Cart
           </Link>

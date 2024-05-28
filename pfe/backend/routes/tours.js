@@ -42,13 +42,21 @@ router.post('/api/tours/create', async (req, res) => {
   const newTourData = req.body;
 
   try {
-    const newTour = await Tour.create(newTourData);
-    res.status(201).json(newTour);
+    const currentDate = new Date();
+    const formattedDate = `${currentDate.getFullYear()}-${(currentDate.getMonth() + 1).toString().padStart(2, '0')}-${currentDate.getDate().toString().padStart(2, '0')}`;
+    
+    const newTour = new Tour({
+      ...newTourData,
+      createdAt: formattedDate // Capture the current date in the %Y-%m-%d format
+    });
+    const savedTour = await newTour.save();
+    res.status(201).json(savedTour);
   } catch (error) {
     console.error('Error creating tour:', error);
     res.status(500).json({ message: 'Failed to create tour' });
   }
 });
+
 // DELETE route to delete a specific tour by ID
 router.delete('/api/tours/:id', async (req, res) => {
   const { id } = req.params;
@@ -222,4 +230,39 @@ router.get('/api/tours/reserved/guider/:guiderId', async (req, res) => {
     res.status(500).json({ message: 'Failed to retrieve reserved tours' });
   }
 });
+
+
+
+// GET route to retrieve all tours created per day
+router.get('/api/tours/stats', async (req, res) => {
+  try {
+      const toursCreatedPerDay = await Tour.aggregate([
+          {
+              $group: {
+                  _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
+                  count: { $sum: 1 }
+              }
+          },
+          {
+              $project: {
+                  _id: 0,
+                  date: "$_id",
+                  count: 1
+              }
+          },
+          {
+              $sort: { date: 1 }
+          }
+      ]);
+
+      res.status(200).json(toursCreatedPerDay);
+  } catch (error) {
+      console.error('Error retrieving tours created per day:', error);
+      res.status(500).json({ message: 'Failed to retrieve tours created per day' });
+  }
+});
+
+
+
+
 export default router;

@@ -159,6 +159,7 @@ function App() {
     setIsUser(false);
     setIsGuider(false);
     setUserId('');
+    window.location.href = '/home';
   };
 
   if (loading) {

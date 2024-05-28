@@ -14,6 +14,7 @@ router.post('/sites/create', async (req, res) => {
       sitedescription,
       sitelocation,
       siteimages,
+      createdAt: new Date() // Capture the current date as the creation date
     });
 
     // Save the new site to the database
@@ -25,6 +26,7 @@ router.post('/sites/create', async (req, res) => {
     res.status(500).json({ message: 'Failed to create site' });
   }
 });
+
 // get all sites route
 router.get('/sites', async (req, res) => {
   try {
