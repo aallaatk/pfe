@@ -39,6 +39,7 @@ import TourDetails from './Components/TourDetails';
 import DashboardTours from './Components/DashboardTours';
 import Cancel from './Components/Cancel';
 import Success from './Components/Succes';
+import Guiders from './Pages/Guiders';
 
 function DashboardRoutes() {
   return (
@@ -199,6 +200,7 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/home" element={<Home />} />
+              <Route path="/guiders" element={<Guiders/>} />
               <Route path="/signup" element={<Signup />} />
               <Route path="/login" element={<Login onLogin={handleLogin} />} />
               <Route path="/tours" element={<Tours />} />

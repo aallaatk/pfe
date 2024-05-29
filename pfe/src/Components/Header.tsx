@@ -28,9 +28,7 @@ function Header() {
               <Link className="nav-link" to="/about">About</Link>
             </li>
             {/*  */}
-            <li className="nav-item">
-              <Link className="nav-link" to="/admin">Admin</Link>
-            </li>
+          
             {/*  */}
           </ul>
           <Link className="nav-link" to="/signup"> <Button text={"Sign Up"} bclass={" btn btn-grad m-1 "}/></Link>

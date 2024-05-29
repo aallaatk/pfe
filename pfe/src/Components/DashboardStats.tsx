@@ -40,9 +40,10 @@ function DashboardStats() {
             users={stats.users}
             sites={stats.sites}
             guiders={stats.guiders} />
-           <LineChart/>
+           
             <DashUserChart/>
             <DashTourChart/>
+            <LineChart/>
             <div className='container'>
             <div className="row">
                 <div className="col-sm-6">
